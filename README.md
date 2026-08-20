@@ -213,7 +213,13 @@ pnpm start
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under an **Exclusive Commercial License**. This is a paid, proprietary license. See the [LICENSE](LICENSE) file for full terms and conditions.
+
+**License Fee**: $40,000+ USD (subject to negotiation)
+
+For licensing inquiries, contact:
+- Email: graysoncomrade7@gmail.com
+- Phone: +265 992 629 908 / +265 883 220 981
 
 ## 📞 Support
 
