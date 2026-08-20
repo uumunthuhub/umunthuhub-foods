@@ -1,0 +1,19 @@
+{
+  "name": "umunthuhub-foods",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter \"./apps/**\" dev",
+    "dev:customer": "pnpm --filter customer-app dev",
+    "dev:admin": "pnpm --filter admin-portal dev",
+    "build": "pnpm --filter \"./apps/**\" build",
+    "build:customer": "pnpm --filter customer-app build",
+    "build:admin": "pnpm --filter admin-portal build",
+    "lint": "pnpm --filter \"./apps/**\" lint",
+    "type-check": "pnpm --filter \"./packages/**\" type-check"
+  },
+  "devDependencies": {
+    "typescript": "^5"
+  },
+  "packageManager": "pnpm@10.33.2"
+}
