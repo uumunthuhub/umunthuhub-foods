@@ -14,7 +14,8 @@ export const CheckoutView: React.FC = () => {
     removePromoCode,
     placeOrder,
     setCustomerTab,
-    showToast
+    showToast,
+    themeMode
   } = useApp();
 
   const [name, setName] = useState('Michael Rossi');
@@ -31,15 +32,35 @@ export const CheckoutView: React.FC = () => {
 
   if (cart.length === 0) {
     return (
-      <div className="text-center py-20 glass-panel rounded-3xl p-8 border border-[#e1bfb5]/50 space-y-4 max-w-md mx-auto">
-        <div className="w-16 h-16 rounded-full bg-[#f3f3f3] flex items-center justify-center text-[#8d7168] mx-auto">
+      <div className={`text-center py-20 glass-panel rounded-3xl p-8 border space-y-4 max-w-md mx-auto ${
+        themeMode === 'warm' ? 'border-[#d4c4b8]/50' :
+        themeMode === 'dark' ? 'border-white/20' :
+        'border-[#e1bfb5]/50'
+      }`}>
+        <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto ${
+          themeMode === 'warm' ? 'bg-[#f5ede4] text-[#6b5a4a]' :
+          themeMode === 'dark' ? 'bg-[#2e302f] text-[#c4c4c4]' :
+          'bg-[#f3f3f3] text-[#8d7168]'
+        }`}>
           <span className="material-symbols-outlined text-3xl">shopping_cart</span>
         </div>
-        <h2 className="font-heading font-extrabold text-lg text-[#1a1c1c]">No items to checkout</h2>
-        <p className="text-xs text-[#594139]">Add some fresh items from our curated kitchens to continue.</p>
+        <h2 className={`font-heading font-extrabold text-lg ${
+          themeMode === 'warm' ? 'text-[#3d2b1f]' :
+          themeMode === 'dark' ? 'text-[#f5f5f5]' :
+          'text-[#1a1c1c]'
+        }`}>No items to checkout</h2>
+        <p className={`text-xs ${
+          themeMode === 'warm' ? 'text-[#6b5a4a]' :
+          themeMode === 'dark' ? 'text-[#c4c4c4]' :
+          'text-[#594139]'
+        }`}>Add some fresh items from our curated kitchens to continue.</p>
         <button
           onClick={() => setCustomerTab('home')}
-          className="px-5 py-2.5 rounded-xl glass-button-primary text-xs font-bold"
+          className={`px-5 py-2.5 rounded-xl glass-button-primary text-xs font-bold ${
+            themeMode === 'warm' ? 'bg-[#fffbf7] hover:bg-[#f5ede4]' :
+            themeMode === 'dark' ? 'bg-[#242625] hover:bg-[#2e302f]' :
+            'bg-white hover:bg-[#f3f3f3]'
+          }`}
         >
           Explore Menus
         </button>
@@ -90,7 +111,11 @@ export const CheckoutView: React.FC = () => {
       {/* Back button */}
       <button
         onClick={() => setCustomerTab('restaurant')}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-[#f3f3f3] border border-[#e1bfb5]/60 text-xs font-bold text-[#594139] shadow-sm transition-colors cursor-pointer"
+        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold shadow-sm transition-colors cursor-pointer ${
+          themeMode === 'warm' ? 'bg-[#fffbf7] hover:bg-[#f5ede4] border-[#d4c4b8]/60 text-[#6b5a4a]' :
+          themeMode === 'dark' ? 'bg-[#242625] hover:bg-[#2e302f] border-white/20 text-[#c4c4c4]' :
+          'bg-white hover:bg-[#f3f3f3] border-[#e1bfb5]/60 text-[#594139]'
+        }`}
       >
         <span className="material-symbols-outlined text-[18px]">arrow_back</span>
         <span>Back to {selectedRestaurant.name}</span>
@@ -98,10 +123,18 @@ export const CheckoutView: React.FC = () => {
 
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-heading font-extrabold text-2xl sm:text-3xl text-[#1a1c1c]">
+          <h1 className={`font-heading font-extrabold text-2xl sm:text-3xl ${
+            themeMode === 'warm' ? 'text-[#3d2b1f]' :
+            themeMode === 'dark' ? 'text-[#f5f5f5]' :
+            'text-[#1a1c1c]'
+          }`}>
             Order Checkout
           </h1>
-          <p className="text-xs text-[#594139]">Confirm your details and payment method</p>
+          <p className={`text-xs ${
+            themeMode === 'warm' ? 'text-[#6b5a4a]' :
+            themeMode === 'dark' ? 'text-[#c4c4c4]' :
+            'text-[#594139]'
+          }`}>Confirm your details and payment method</p>
         </div>
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#00ae81]/15 border border-[#00ae81]/30 text-[#006c4f] text-xs font-bold">
           <span className="material-symbols-outlined text-[16px]">lock</span>
@@ -115,13 +148,21 @@ export const CheckoutView: React.FC = () => {
         <div className="lg:col-span-7 space-y-6">
           
           {/* Delivery Address & Map Pin Card */}
-          <div className="glass-panel rounded-3xl p-5 sm:p-6 border border-[#e1bfb5]/50 space-y-4">
+          <div className={`glass-panel rounded-3xl p-5 sm:p-6 border space-y-4 ${
+            themeMode === 'warm' ? 'border-[#d4c4b8]/50' :
+            themeMode === 'dark' ? 'border-white/20' :
+            'border-[#e1bfb5]/50'
+          }`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-xl bg-[#ff6b35]/15 flex items-center justify-center text-[#ab3500]">
                   <span className="material-symbols-outlined text-[20px]">pin_drop</span>
                 </div>
-                <h3 className="font-heading font-bold text-sm text-[#1a1c1c]">
+                <h3 className={`font-heading font-bold text-sm ${
+                  themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                  themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                  'text-[#1a1c1c]'
+                }`}>
                   Delivery Location
                 </h3>
               </div>
@@ -132,8 +173,14 @@ export const CheckoutView: React.FC = () => {
             </div>
 
             {/* Map Preview Graphic */}
-            <div className="relative h-28 w-full rounded-2xl overflow-hidden border border-[#e1bfb5]/50 bg-[#e8e8e8]">
-              <div className="absolute inset-0 bg-[radial-gradient(#ab3500_1px,transparent_1px)] [background-size:16px_16px] opacity-25" />
+            <div className={`relative h-28 w-full rounded-2xl overflow-hidden border ${
+              themeMode === 'warm' ? 'border-[#d4c4b8]/50 bg-[#e9ddcf]' :
+              themeMode === 'dark' ? 'border-white/20 bg-[#1a1c1c]' :
+              'border-[#e1bfb5]/50 bg-[#e8e8e8]'
+            }`}>
+              <div className={`absolute inset-0 bg-[radial-gradient(#ab3500_1px,transparent_1px)] bg-size-[16px_16px] ${
+                themeMode === 'dark' ? 'opacity-15' : 'opacity-25'
+              }`} />
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="flex flex-col items-center animate-bounce">
                   <div className="px-2.5 py-1 rounded-lg bg-[#ab3500] text-white text-[10px] font-extrabold shadow-md mb-1">
@@ -148,7 +195,11 @@ export const CheckoutView: React.FC = () => {
 
             <div className="space-y-3">
               <div>
-                <label className="text-[11px] font-bold text-[#594139] block mb-1">Full Street Address & Unit</label>
+                <label className={`text-[11px] font-bold block mb-1 ${
+                  themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                  themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                  'text-[#594139]'
+                }`}>Full Street Address & Unit</label>
                 <input
                   type="text"
                   required
@@ -160,7 +211,11 @@ export const CheckoutView: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="text-[11px] font-bold text-[#594139] block mb-1">Recipient Name</label>
+                  <label className={`text-[11px] font-bold block mb-1 ${
+                    themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                    themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                    'text-[#594139]'
+                  }`}>Recipient Name</label>
                   <input
                     type="text"
                     required
@@ -170,7 +225,11 @@ export const CheckoutView: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="text-[11px] font-bold text-[#594139] block mb-1">Contact Phone</label>
+                  <label className={`text-[11px] font-bold block mb-1 ${
+                    themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                    themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                    'text-[#594139]'
+                  }`}>Contact Phone</label>
                   <input
                     type="text"
                     required
@@ -182,7 +241,11 @@ export const CheckoutView: React.FC = () => {
               </div>
 
               <div>
-                <label className="text-[11px] font-bold text-[#594139] block mb-1">Drop-off Instructions for Rider</label>
+                <label className={`text-[11px] font-bold block mb-1 ${
+                  themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                  themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                  'text-[#594139]'
+                }`}>Drop-off Instructions for Rider</label>
                 <input
                   type="text"
                   value={deliveryNotes}
@@ -195,8 +258,16 @@ export const CheckoutView: React.FC = () => {
           </div>
 
           {/* Delivery Timing Options */}
-          <div className="glass-panel rounded-3xl p-5 sm:p-6 border border-[#e1bfb5]/50 space-y-3">
-            <h3 className="font-heading font-bold text-sm text-[#1a1c1c] flex items-center gap-2">
+          <div className={`glass-panel rounded-3xl p-5 sm:p-6 border space-y-3 ${
+            themeMode === 'warm' ? 'border-[#d4c4b8]/50' :
+            themeMode === 'dark' ? 'border-white/20' :
+            'border-[#e1bfb5]/50'
+          }`}>
+            <h3 className={`font-heading font-bold text-sm flex items-center gap-2 ${
+              themeMode === 'warm' ? 'text-[#3d2b1f]' :
+              themeMode === 'dark' ? 'text-[#f5f5f5]' :
+              'text-[#1a1c1c]'
+            }`}>
               <span className="material-symbols-outlined text-[#24619d] text-[20px]">timer</span>
               Delivery Timing
             </h3>
@@ -208,11 +279,17 @@ export const CheckoutView: React.FC = () => {
                 className={`p-3.5 rounded-2xl text-left border transition-all cursor-pointer ${
                   deliveryTimeOption === 'asap'
                     ? 'bg-[#24619d]/10 border-[#24619d] text-[#24619d]'
-                    : 'bg-[#f9f9f9] border-[#e1bfb5]/50 text-[#594139] hover:bg-white'
+                    : themeMode === 'warm' ? 'bg-[#fffbf7] border-[#d4c4b8]/50 text-[#6b5a4a] hover:bg-white' :
+                    themeMode === 'dark' ? 'bg-[#242625] border-white/20 text-[#c4c4c4] hover:bg-[#2e302f]' :
+                    'bg-[#f9f9f9] border-[#e1bfb5]/50 text-[#594139] hover:bg-white'
                 }`}
               >
                 <p className="font-heading font-bold text-xs">Standard Express (ASAP)</p>
-                <p className="text-[11px] text-[#594139] mt-0.5">20-30 min estimated</p>
+                <p className={`text-[11px] mt-0.5 ${
+                  themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                  themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                  'text-[#594139]'
+                }`}>20-30 min estimated</p>
               </button>
 
               <button
@@ -221,23 +298,41 @@ export const CheckoutView: React.FC = () => {
                 className={`p-3.5 rounded-2xl text-left border transition-all cursor-pointer ${
                   deliveryTimeOption === 'scheduled'
                     ? 'bg-[#24619d]/10 border-[#24619d] text-[#24619d]'
-                    : 'bg-[#f9f9f9] border-[#e1bfb5]/50 text-[#594139] hover:bg-white'
+                    : themeMode === 'warm' ? 'bg-[#fffbf7] border-[#d4c4b8]/50 text-[#6b5a4a] hover:bg-white' :
+                    themeMode === 'dark' ? 'bg-[#242625] border-white/20 text-[#c4c4c4] hover:bg-[#2e302f]' :
+                    'bg-[#f9f9f9] border-[#e1bfb5]/50 text-[#594139] hover:bg-white'
                 }`}
               >
                 <p className="font-heading font-bold text-xs">Schedule For Later</p>
-                <p className="text-[11px] text-[#594139] mt-0.5">Pick lunch / dinner slot</p>
+                <p className={`text-[11px] mt-0.5 ${
+                  themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                  themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                  'text-[#594139]'
+                }`}>Pick lunch / dinner slot</p>
               </button>
             </div>
           </div>
 
           {/* Rider Tip Selector */}
-          <div className="glass-panel rounded-3xl p-5 sm:p-6 border border-[#e1bfb5]/50 space-y-3">
+          <div className={`glass-panel rounded-3xl p-5 sm:p-6 border space-y-3 ${
+            themeMode === 'warm' ? 'border-[#d4c4b8]/50' :
+            themeMode === 'dark' ? 'border-white/20' :
+            'border-[#e1bfb5]/50'
+          }`}>
             <div className="flex items-center justify-between">
-              <h3 className="font-heading font-bold text-sm text-[#1a1c1c] flex items-center gap-2">
+              <h3 className={`font-heading font-bold text-sm flex items-center gap-2 ${
+                themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                'text-[#1a1c1c]'
+              }`}>
                 <span className="material-symbols-outlined text-amber-600 text-[20px]">volunteer_activism</span>
                 Courier Tip
               </h3>
-              <span className="text-[11px] text-[#8d7168]">100% goes to your driver</span>
+              <span className={`text-[11px] ${
+                themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                'text-[#8d7168]'
+              }`}>100% goes to your driver</span>
             </div>
 
             <div className="grid grid-cols-4 gap-2.5">
@@ -254,7 +349,9 @@ export const CheckoutView: React.FC = () => {
                     className={`py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
                       isSelected
                         ? 'bg-[#ab3500] text-white shadow-sm'
-                        : 'bg-[#f3f3f3] text-[#1a1c1c] border border-[#e1bfb5]/50 hover:bg-white'
+                        : themeMode === 'warm' ? 'bg-[#f5ede4] text-[#3d2b1f] border border-[#d4c4b8]/50 hover:bg-white' :
+                        themeMode === 'dark' ? 'bg-[#2e302f] text-[#f5f5f5] border border-white/20 hover:bg-[#383a39]' :
+                        'bg-[#f3f3f3] text-[#1a1c1c] border border-[#e1bfb5]/50 hover:bg-white'
                     }`}
                   >
                     ${tip.toFixed(2)}
@@ -267,7 +364,9 @@ export const CheckoutView: React.FC = () => {
                 className={`py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
                   isCustomTip
                     ? 'bg-[#ab3500] text-white shadow-sm'
-                    : 'bg-[#f3f3f3] text-[#1a1c1c] border border-[#e1bfb5]/50 hover:bg-white'
+                    : themeMode === 'warm' ? 'bg-[#f5ede4] text-[#3d2b1f] border border-[#d4c4b8]/50 hover:bg-white' :
+                    themeMode === 'dark' ? 'bg-[#2e302f] text-[#f5f5f5] border border-white/20 hover:bg-[#383a39]' :
+                    'bg-[#f3f3f3] text-[#1a1c1c] border border-[#e1bfb5]/50 hover:bg-white'
                 }`}
               >
                 Custom
@@ -290,8 +389,16 @@ export const CheckoutView: React.FC = () => {
           </div>
 
           {/* Payment Method Selector */}
-          <div className="glass-panel rounded-3xl p-5 sm:p-6 border border-[#e1bfb5]/50 space-y-3">
-            <h3 className="font-heading font-bold text-sm text-[#1a1c1c] flex items-center gap-2">
+          <div className={`glass-panel rounded-3xl p-5 sm:p-6 border space-y-3 ${
+            themeMode === 'warm' ? 'border-[#d4c4b8]/50' :
+            themeMode === 'dark' ? 'border-white/20' :
+            'border-[#e1bfb5]/50'
+          }`}>
+            <h3 className={`font-heading font-bold text-sm flex items-center gap-2 ${
+              themeMode === 'warm' ? 'text-[#3d2b1f]' :
+              themeMode === 'dark' ? 'text-[#f5f5f5]' :
+              'text-[#1a1c1c]'
+            }`}>
               <span className="material-symbols-outlined text-[#006c4f] text-[20px]">credit_card</span>
               Payment Method
             </h3>
@@ -312,19 +419,32 @@ export const CheckoutView: React.FC = () => {
                     className={`w-full flex items-center justify-between p-3.5 rounded-2xl border transition-all text-left cursor-pointer ${
                       isSelected
                         ? 'bg-[#ff6b35]/10 border-2 border-[#ab3500] text-[#ab3500]'
-                        : 'bg-[#f9f9f9] border-[#e1bfb5]/50 text-[#1a1c1c] hover:bg-white'
+                        : themeMode === 'warm' ? 'bg-[#fffbf7] border-[#d4c4b8]/50 text-[#3d2b1f] hover:bg-white' :
+                        themeMode === 'dark' ? 'bg-[#242625] border-white/20 text-[#f5f5f5] hover:bg-[#2e302f]' :
+                        'bg-[#f9f9f9] border-[#e1bfb5]/50 text-[#1a1c1c] hover:bg-white'
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-                        isSelected ? 'border-[#ab3500] bg-[#ab3500]' : 'border-[#8d7168] bg-white'
+                        isSelected ? 'border-[#ab3500] bg-[#ab3500]' :
+                        themeMode === 'warm' ? 'border-[#6b5a4a] bg-[#fffbf7]' :
+                        themeMode === 'dark' ? 'border-[#c4c4c4] bg-[#242625]' :
+                        'border-[#8d7168] bg-white'
                       }`}>
                         {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
                       </div>
                       <span className="material-symbols-outlined text-[20px]">{method.icon}</span>
-                      <span className="text-xs font-bold">{method.label}</span>
+                      <span className={`text-xs font-bold ${
+                        themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                        themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                        'text-[#1a1c1c]'
+                      }`}>{method.label}</span>
                     </div>
-                    <span className="text-[11px] text-[#8d7168] font-medium">{method.badge}</span>
+                    <span className={`text-[11px] font-medium ${
+                      themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                      themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                      'text-[#8d7168]'
+                    }`}>{method.badge}</span>
                   </button>
                 );
               })}
@@ -335,8 +455,16 @@ export const CheckoutView: React.FC = () => {
 
         {/* Right Column - Order Summary */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="glass-panel rounded-3xl p-5 sm:p-6 border border-[#e1bfb5]/50 space-y-5 sticky top-24">
-            <h3 className="font-heading font-extrabold text-base text-[#1a1c1c] pb-3 border-b border-[#e1bfb5]/40">
+          <div className={`glass-panel rounded-3xl p-5 sm:p-6 border space-y-5 sticky top-24 ${
+            themeMode === 'warm' ? 'border-[#d4c4b8]/50' :
+            themeMode === 'dark' ? 'border-white/20' :
+            'border-[#e1bfb5]/50'
+          }`}>
+            <h3 className={`font-heading font-extrabold text-base pb-3 border-b ${
+              themeMode === 'warm' ? 'text-[#3d2b1f] border-b-[#d4c4b8]/40' :
+              themeMode === 'dark' ? 'text-[#f5f5f5] border-b-white/20' :
+              'text-[#1a1c1c] border-b-[#e1bfb5]/40'
+            }`}>
               Order Breakdown ({cart.length} items)
             </h3>
 
@@ -345,16 +473,28 @@ export const CheckoutView: React.FC = () => {
               {cart.map(item => (
                 <div key={item.id} className="flex justify-between items-start gap-2 text-xs">
                   <div className="min-w-0">
-                    <p className="font-bold text-[#1a1c1c] truncate">
+                    <p className={`font-bold truncate ${
+                      themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                      themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                      'text-[#1a1c1c]'
+                    }`}>
                       {item.quantity}x {item.menuItem.name}
                     </p>
                     {Object.entries(item.selectedOptions).length > 0 && (
-                      <p className="text-[10px] text-[#8d7168] truncate">
+                      <p className={`text-[10px] truncate ${
+                        themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                        themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                        'text-[#8d7168]'
+                      }`}>
                         {Object.values(item.selectedOptions).join(', ')}
                       </p>
                     )}
                   </div>
-                  <span className="font-bold text-[#1a1c1c] shrink-0">
+                  <span className={`font-bold shrink-0 ${
+                    themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                    themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                    'text-[#1a1c1c]'
+                  }`}>
                     ${item.itemTotal.toFixed(2)}
                   </span>
                 </div>
@@ -394,7 +534,11 @@ export const CheckoutView: React.FC = () => {
                         setPromoCodeInput('');
                       }
                     }}
-                    className="px-4 py-2 bg-[#f3f3f3] hover:bg-[#e8e8e8] border border-[#e1bfb5] rounded-xl text-xs font-bold text-[#1a1c1c]"
+                    className={`px-4 py-2 border rounded-xl text-xs font-bold ${
+                      themeMode === 'warm' ? 'bg-[#f5ede4] hover:bg-[#e9ddcf] border-[#d4c4b8] text-[#3d2b1f]' :
+                      themeMode === 'dark' ? 'bg-[#2e302f] hover:bg-[#383a39] border-white/20 text-[#f5f5f5]' :
+                      'bg-[#f3f3f3] hover:bg-[#e8e8e8] border-[#e1bfb5] text-[#1a1c1c]'
+                    }`}
                   >
                     Apply
                   </button>
@@ -403,22 +547,58 @@ export const CheckoutView: React.FC = () => {
             </div>
 
             {/* Price Calculations */}
-            <div className="p-4 bg-[#f3f3f3] rounded-2xl border border-[#e1bfb5]/40 space-y-2 text-xs">
-              <div className="flex justify-between text-[#594139]">
+            <div className={`p-4 rounded-2xl border space-y-2 text-xs ${
+              themeMode === 'warm' ? 'bg-[#f5ede4] border-[#d4c4b8]/40' :
+              themeMode === 'dark' ? 'bg-[#2e302f] border-white/20' :
+              'bg-[#f3f3f3] border-[#e1bfb5]/40'
+            }`}>
+              <div className={`flex justify-between ${
+                themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                'text-[#594139]'
+              }`}>
                 <span>Items Subtotal</span>
-                <span className="font-semibold text-[#1a1c1c]">${cartSubtotal.toFixed(2)}</span>
+                <span className={`font-semibold ${
+                  themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                  themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                  'text-[#1a1c1c]'
+                }`}>${cartSubtotal.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-[#594139]">
+              <div className={`flex justify-between ${
+                themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                'text-[#594139]'
+              }`}>
                 <span>Delivery Fee</span>
-                <span className="font-semibold text-[#1a1c1c]">${deliveryFee.toFixed(2)}</span>
+                <span className={`font-semibold ${
+                  themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                  themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                  'text-[#1a1c1c]'
+                }`}>${deliveryFee.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-[#594139]">
+              <div className={`flex justify-between ${
+                themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                'text-[#594139]'
+              }`}>
                 <span>Service & Carbon Offset</span>
-                <span className="font-semibold text-[#1a1c1c]">${serviceFee.toFixed(2)}</span>
+                <span className={`font-semibold ${
+                  themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                  themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                  'text-[#1a1c1c]'
+                }`}>${serviceFee.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-[#594139]">
+              <div className={`flex justify-between ${
+                themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                'text-[#594139]'
+              }`}>
                 <span>Rider Tip</span>
-                <span className="font-semibold text-[#1a1c1c]">${currentTip.toFixed(2)}</span>
+                <span className={`font-semibold ${
+                  themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                  themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                  'text-[#1a1c1c]'
+                }`}>${currentTip.toFixed(2)}</span>
               </div>
               {discount > 0 && (
                 <div className="flex justify-between text-[#006c4f] font-bold">
@@ -427,7 +607,11 @@ export const CheckoutView: React.FC = () => {
                 </div>
               )}
 
-              <div className="pt-3 border-t border-[#e1bfb5]/50 flex justify-between font-heading font-extrabold text-base text-[#1a1c1c]">
+              <div className={`pt-3 border-t flex justify-between font-heading font-extrabold text-base ${
+                themeMode === 'warm' ? 'border-t-[#d4c4b8]/50 text-[#3d2b1f]' :
+                themeMode === 'dark' ? 'border-t-white/20 text-[#f5f5f5]' :
+                'border-t-[#e1bfb5]/50 text-[#1a1c1c]'
+              }`}>
                 <span>Grand Total</span>
                 <span className="text-[#ab3500]">${grandTotal.toFixed(2)}</span>
               </div>
@@ -443,7 +627,11 @@ export const CheckoutView: React.FC = () => {
               <span className="font-extrabold">${grandTotal.toFixed(2)} →</span>
             </button>
 
-            <p className="text-center text-[10px] text-[#8d7168]">
+            <p className={`text-center text-[10px] ${
+              themeMode === 'warm' ? 'text-[#6b5a4a]' :
+              themeMode === 'dark' ? 'text-[#c4c4c4]' :
+              'text-[#8d7168]'
+            }`}>
               By placing this order you agree to Umunthuhub-Foods Terms & Zero-Waste Packaging policy.
             </p>
           </div>

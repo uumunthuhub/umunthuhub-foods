@@ -14,7 +14,8 @@ export const RestaurantMenu: React.FC = () => {
     setCustomerTab,
     cartItemsCount,
     cartSubtotal,
-    setIsCartDrawerOpen
+    setIsCartDrawerOpen,
+    themeMode
   } = useApp();
 
   const [activeCategory, setActiveCategory] = useState<string>('All');
@@ -39,7 +40,11 @@ export const RestaurantMenu: React.FC = () => {
       {/* Back button */}
       <button
         onClick={() => setCustomerTab('home')}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-[#f3f3f3] border border-[#e1bfb5]/60 text-xs font-bold text-[#594139] shadow-sm transition-colors cursor-pointer"
+        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold shadow-sm transition-colors cursor-pointer ${
+          themeMode === 'dark'
+            ? 'bg-[#383a39] hover:bg-[#4a4a4a] border-[#3a3a3a] text-[#f5f5f5]'
+            : 'bg-white hover:bg-[#f3f3f3] border-[#e1bfb5]/60 text-[#594139]'
+        }`}
       >
         <span className="material-symbols-outlined text-[18px]">arrow_back</span>
         <span>Back to Restaurants</span>
@@ -57,16 +62,20 @@ export const RestaurantMenu: React.FC = () => {
 
           {/* Top badges */}
           <div className="absolute top-4 left-4 flex gap-2">
-            <span className="px-3 py-1 rounded-xl bg-white/90 backdrop-blur-md text-[#006c4f] text-xs font-bold flex items-center gap-1">
+            <span className={`px-3 py-1 rounded-xl backdrop-blur-md text-[#006c4f] text-xs font-bold flex items-center gap-1 ${
+              themeMode === 'dark' ? 'bg-[#242625]/90' : 'bg-white/90'
+            }`}>
               <span className="material-symbols-outlined text-[16px] text-[#00ae81]">verified</span>
               Verified Kitchen
             </span>
           </div>
 
-          <div className="absolute top-4 right-4 px-3 py-1 rounded-xl bg-white/90 backdrop-blur-md text-[#1a1c1c] text-xs font-bold flex items-center gap-1">
+          <div className={`absolute top-4 right-4 px-3 py-1 rounded-xl backdrop-blur-md text-xs font-bold flex items-center gap-1 ${
+            themeMode === 'dark' ? 'bg-[#242625]/90 text-[#f5f5f5]' : 'bg-white/90 text-[#1a1c1c]'
+          }`}>
             <span className="material-symbols-outlined text-[16px] text-amber-500 fill-1">star</span>
             <span>{selectedRestaurant.rating}</span>
-            <span className="text-[#8d7168]">({selectedRestaurant.reviewsCount} reviews)</span>
+            <span className={themeMode === 'dark' ? 'text-[#c4c4c4]' : 'text-[#8d7168]'}>({selectedRestaurant.reviewsCount} reviews)</span>
           </div>
 
           {/* Bottom Info Banner */}
@@ -113,7 +122,11 @@ export const RestaurantMenu: React.FC = () => {
       </div>
 
       {/* Sticky Category & Dietary Filter Bar */}
-      <div className="sticky top-20 z-30 glass-panel rounded-2xl p-2 sm:p-2.5 border border-[#e1bfb5]/60 shadow-md flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className={`sticky top-20 z-30 rounded-2xl p-2 sm:p-2.5 border shadow-md flex flex-col sm:flex-row items-center justify-between gap-3 ${
+        themeMode === 'dark'
+          ? 'bg-[#242625] border-[#3a3a3a]'
+          : 'glass-panel border-[#e1bfb5]/60'
+      }`}>
         {/* Category Pills with Scroll Arrows */}
         <div className="w-full sm:flex-1 min-w-0">
           <ScrollableContainer scrollAmount={240} arrowSize="sm" className="gap-1.5 py-0.5">
@@ -126,7 +139,9 @@ export const RestaurantMenu: React.FC = () => {
                   className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                     isSelected
                       ? 'bg-[#ab3500] text-white shadow-sm shadow-[#ab3500]/20'
-                      : 'bg-[#f3f3f3] text-[#594139] hover:bg-[#e8e8e8] hover:text-[#1a1c1c]'
+                      : themeMode === 'dark'
+                        ? 'bg-[#383a39] text-[#f5f5f5] hover:bg-[#4a4a4a]'
+                        : 'bg-[#f3f3f3] text-[#594139] hover:bg-[#e8e8e8] hover:text-[#1a1c1c]'
                   }`}
                 >
                   {cat}
@@ -150,7 +165,9 @@ export const RestaurantMenu: React.FC = () => {
               className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-colors cursor-pointer ${
                 dietaryFilter === f.id
                   ? 'bg-[#00ae81] text-white'
-                  : 'bg-white text-[#594139] border border-[#e1bfb5]/40 hover:bg-[#f9f9f9]'
+                  : themeMode === 'dark'
+                    ? 'bg-[#383a39] text-[#f5f5f5] border border-[#3a3a3a] hover:bg-[#4a4a4a]'
+                    : 'bg-white text-[#594139] border border-[#e1bfb5]/40 hover:bg-[#f9f9f9]'
               }`}
             >
               {f.label}
@@ -162,18 +179,30 @@ export const RestaurantMenu: React.FC = () => {
       {/* Menu Items Grid */}
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="font-heading font-extrabold text-xl text-[#1a1c1c]">
+          <h2 className={`font-heading font-extrabold text-xl ${
+            themeMode === 'dark' ? 'text-[#f5f5f5]' : 'text-[#1a1c1c]'
+          }`}>
             {activeCategory === 'All' ? 'Full Culinary Menu' : activeCategory}
           </h2>
-          <span className="text-xs text-[#8d7168] font-medium">
+          <span className={`text-xs font-medium ${
+            themeMode === 'dark' ? 'text-[#c4c4c4]' : 'text-[#8d7168]'
+          }`}>
             {filteredItems.length} items available
           </span>
         </div>
 
         {filteredItems.length === 0 ? (
-          <div className="text-center py-12 glass-panel rounded-3xl p-8 border border-[#e1bfb5]/40">
-            <span className="material-symbols-outlined text-4xl text-[#8d7168]">restaurant_menu</span>
-            <p className="font-heading font-bold text-sm text-[#1a1c1c] mt-2">No items match your dietary filter</p>
+          <div className={`text-center py-12 rounded-3xl p-8 border ${
+            themeMode === 'dark'
+              ? 'bg-[#242625] border-[#3a3a3a]'
+              : 'glass-panel border-[#e1bfb5]/40'
+          }`}>
+            <span className={`material-symbols-outlined text-4xl ${
+              themeMode === 'dark' ? 'text-[#7a7a7a]' : 'text-[#8d7168]'
+            }`}>restaurant_menu</span>
+            <p className={`font-heading font-bold text-sm mt-2 ${
+              themeMode === 'dark' ? 'text-[#f5f5f5]' : 'text-[#1a1c1c]'
+            }`}>No items match your dietary filter</p>
             <button
               onClick={() => {
                 setActiveCategory('All');

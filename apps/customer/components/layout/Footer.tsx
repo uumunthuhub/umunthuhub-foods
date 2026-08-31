@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 
 export const Footer: React.FC = () => {
-  const { setPersona, setCustomerTab, showToast } = useApp();
+  const { setPersona, setCustomerTab, showToast, themeMode } = useApp();
   const [email, setEmail] = useState('');
 
   const handleSubscribe = (e: React.FormEvent) => {
@@ -15,15 +15,27 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="mt-auto bg-gradient-to-b from-white to-[#faf9f8] border-t border-[#e1bfb5]/30">
+    <footer className={`mt-auto border-t ${
+      themeMode === 'warm' ? 'bg-linear-to-b from-[#fffbf7] to-[#f5ede4] border-[#d4c4b8]/30' :
+      themeMode === 'dark' ? 'bg-linear-to-b from-[#242625] to-[#1a1c1c] border-white/10' :
+      'bg-linear-to-b from-white to-[#faf9f8] border-[#e1bfb5]/30'
+    }`}>
       {/* Newsletter Strip - Minimal */}
       <div className="max-w-6xl mx-auto px-6 py-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="text-center sm:text-left">
-            <h3 className="font-heading font-bold text-sm text-[#1a1c1c] mb-1">
+            <h3 className={`font-heading font-bold text-sm mb-1 ${
+              themeMode === 'warm' ? 'text-[#3d2b1f]' :
+              themeMode === 'dark' ? 'text-[#f5f5f5]' :
+              'text-[#1a1c1c]'
+            }`}>
               Get exclusive culinary perks
             </h3>
-            <p className="text-xs text-[#8d7168]">
+            <p className={`text-xs ${
+              themeMode === 'warm' ? 'text-[#6b5a4a]' :
+              themeMode === 'dark' ? 'text-[#c4c4c4]' :
+              'text-[#8d7168]'
+            }`}>
               Secret menu drops & weekly chef tastings
             </p>
           </div>
@@ -34,7 +46,11 @@ export const Footer: React.FC = () => {
               placeholder="Your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 sm:w-64 px-4 py-2.5 rounded-xl border border-[#e1bfb5]/50 bg-white text-xs text-[#1a1c1c] placeholder:text-[#8d7168] focus:outline-none focus:border-[#ab3500]/50 transition-colors"
+              className={`flex-1 sm:w-64 px-4 py-2.5 rounded-xl border text-xs focus:outline-none focus:border-[#ab3500]/50 transition-colors ${
+                themeMode === 'warm' ? 'border-[#d4c4b8]/50 bg-[#fffbf7] text-[#3d2b1f] placeholder:text-[#6b5a4a]' :
+                themeMode === 'dark' ? 'border-white/20 bg-[#242625] text-[#f5f5f5] placeholder:text-[#c4c4c4]' :
+                'border-[#e1bfb5]/50 bg-white text-[#1a1c1c] placeholder:text-[#8d7168]'
+              }`}
             />
             <button
               type="submit"
@@ -58,21 +74,37 @@ export const Footer: React.FC = () => {
                 alt="Umunthuhub-Foods"
                 className="w-8 h-8 rounded-lg object-cover"
               />
-              <span className="font-heading font-bold text-base text-[#1a1c1c]">
+              <span className={`font-heading font-bold text-base ${
+                themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                'text-[#1a1c1c]'
+              }`}>
                 Umunthuhub<span className="text-[#ab3500]">-Foods</span>
               </span>
             </div>
-            <p className="text-xs text-[#8d7168] leading-relaxed">
+            <p className={`text-xs leading-relaxed ${
+              themeMode === 'warm' ? 'text-[#6b5a4a]' :
+              themeMode === 'dark' ? 'text-[#c4c4c4]' :
+              'text-[#8d7168]'
+            }`}>
               Artisanal multi-kitchen ecosystem for food lovers.
             </p>
           </div>
 
           {/* Explore Column */}
           <div className="space-y-3">
-            <h4 className="font-semibold text-xs text-[#1a1c1c] uppercase tracking-wider">
+            <h4 className={`font-semibold text-xs uppercase tracking-wider ${
+              themeMode === 'warm' ? 'text-[#3d2b1f]' :
+              themeMode === 'dark' ? 'text-[#f5f5f5]' :
+              'text-[#1a1c1c]'
+            }`}>
               Explore
             </h4>
-            <ul className="space-y-2 text-xs text-[#8d7168]">
+            <ul className={`space-y-2 text-xs ${
+              themeMode === 'warm' ? 'text-[#6b5a4a]' :
+              themeMode === 'dark' ? 'text-[#c4c4c4]' :
+              'text-[#8d7168]'
+            }`}>
               <li>
                 <button
                   onClick={() => {
@@ -111,10 +143,18 @@ export const Footer: React.FC = () => {
 
           {/* Company Column */}
           <div className="space-y-3">
-            <h4 className="font-semibold text-xs text-[#1a1c1c] uppercase tracking-wider">
+            <h4 className={`font-semibold text-xs uppercase tracking-wider ${
+              themeMode === 'warm' ? 'text-[#3d2b1f]' :
+              themeMode === 'dark' ? 'text-[#f5f5f5]' :
+              'text-[#1a1c1c]'
+            }`}>
               Company
             </h4>
-            <ul className="space-y-2 text-xs text-[#8d7168]">
+            <ul className={`space-y-2 text-xs ${
+              themeMode === 'warm' ? 'text-[#6b5a4a]' :
+              themeMode === 'dark' ? 'text-[#c4c4c4]' :
+              'text-[#8d7168]'
+            }`}>
               <li>
                 <button
                   onClick={() => showToast('About Us', 'Learn more about our mission', 'info')}
@@ -146,18 +186,30 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Legal Strip */}
-        <div className="mt-10 pt-6 border-t border-[#e1bfb5]/30 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#8d7168]">
+        <div className={`mt-10 pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-4 text-xs ${
+          themeMode === 'warm' ? 'border-[#d4c4b8]/30 text-[#6b5a4a]' :
+          themeMode === 'dark' ? 'border-white/10 text-[#c4c4c4]' :
+          'border-[#e1bfb5]/30 text-[#8d7168]'
+        }`}>
           <span>© 2026 Umunthuhub-Foods. All rights reserved.</span>
           <div className="flex items-center gap-4">
             <button
               onClick={() => showToast('Terms', 'Terms of Service', 'info')}
-              className="hover:text-[#1a1c1c] transition-colors cursor-pointer"
+              className={`transition-colors cursor-pointer ${
+                themeMode === 'warm' ? 'hover:text-[#3d2b1f]' :
+                themeMode === 'dark' ? 'hover:text-[#f5f5f5]' :
+                'hover:text-[#1a1c1c]'
+              }`}
             >
               Terms
             </button>
             <button
               onClick={() => showToast('Privacy', 'Privacy Policy', 'info')}
-              className="hover:text-[#1a1c1c] transition-colors cursor-pointer"
+              className={`transition-colors cursor-pointer ${
+                themeMode === 'warm' ? 'hover:text-[#3d2b1f]' :
+                themeMode === 'dark' ? 'hover:text-[#f5f5f5]' :
+                'hover:text-[#1a1c1c]'
+              }`}
             >
               Privacy
             </button>

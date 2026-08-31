@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useApp } from '../../context/AppContext';
 
 export interface ProductCardProps {
   id: string;
@@ -39,6 +40,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   className = '',
   layout = 'vertical',
 }) => {
+  const { themeMode } = useApp();
   const isHorizontal = layout === 'horizontal';
 
   return (
@@ -71,21 +73,37 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 )}
               </div>
 
-              <h3 className="font-heading font-bold text-sm text-[#1a1c1c] group-hover:text-[#ab3500] transition-colors">
+              <h3 className={`font-heading font-bold text-sm transition-colors ${
+                themeMode === 'warm' ? 'text-[#3d2b1f] group-hover:text-[#ab3500]' :
+                themeMode === 'dark' ? 'text-[#f5f5f5] group-hover:text-[#ab3500]' :
+                'text-[#1a1c1c] group-hover:text-[#ab3500]'
+              }`}>
                 {name}
               </h3>
-              <p className="text-xs text-[#594139] line-clamp-2 leading-relaxed mt-1">
+              <p className={`text-xs line-clamp-2 leading-relaxed mt-1 ${
+                themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                'text-[#594139]'
+              }`}>
                 {description}
               </p>
             </div>
 
             <div className="flex items-center justify-between pt-2">
-              <div className="px-3 py-1.5 rounded-lg border-2 border-[#ab3500] bg-white shadow-sm">
+              <div className={`px-3 py-1.5 rounded-lg border-2 border-[#ab3500] shadow-sm ${
+                themeMode === 'warm' ? 'bg-[#fffbf7]' :
+                themeMode === 'dark' ? 'bg-[#242625]' :
+                'bg-white'
+              }`}>
                 <span className="font-heading font-extrabold text-sm text-[#ab3500]">
                   ${price.toFixed(2)}
                 </span>
                 {originalPrice && (
-                  <span className="text-[11px] text-[#8d7168] line-through ml-1.5">
+                  <span className={`text-[11px] line-through ml-1.5 ${
+                    themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                    themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                    'text-[#8d7168]'
+                  }`}>
                     ${originalPrice.toFixed(2)}
                   </span>
                 )}
@@ -104,7 +122,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </div>
           </div>
 
-          <div className="relative w-28 h-28 sm:w-32 sm:h-32 shrink-0 rounded-2xl overflow-hidden border border-[#e1bfb5]/40 shadow-inner">
+          <div className={`relative w-28 h-28 sm:w-32 sm:h-32 shrink-0 rounded-2xl overflow-hidden border shadow-inner ${
+                themeMode === 'warm' ? 'border-[#d4c4b8]/40' :
+                themeMode === 'dark' ? 'border-white/20' :
+                'border-[#e1bfb5]/40'
+              }`}>
             <img
               src={image}
               alt={name}
@@ -141,23 +163,43 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
             <div className="p-4 space-y-2">
               <div className="flex items-start justify-between gap-2">
-                <h4 className="font-heading font-bold text-xs text-[#1a1c1c] line-clamp-1">
+                <h4 className={`font-heading font-bold text-xs line-clamp-1 ${
+                  themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                  themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                  'text-[#1a1c1c]'
+                }`}>
                   {name}
                 </h4>
               </div>
-              <p className="text-[11px] text-[#594139] line-clamp-2 leading-relaxed">
+              <p className={`text-[11px] line-clamp-2 leading-relaxed ${
+                themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                'text-[#594139]'
+              }`}>
                 {description}
               </p>
             </div>
           </div>
 
-          <div className="p-4 pt-2 border-t border-[#e1bfb5]/30 flex items-center justify-between">
-            <div className="px-3 py-1.5 rounded-lg border-2 border-[#ab3500] bg-white shadow-sm">
+          <div className={`p-4 pt-2 border-t flex items-center justify-between ${
+            themeMode === 'warm' ? 'border-[#d4c4b8]/30' :
+            themeMode === 'dark' ? 'border-white/20' :
+            'border-[#e1bfb5]/30'
+          }`}>
+            <div className={`px-3 py-1.5 rounded-lg border-2 border-[#ab3500] shadow-sm ${
+              themeMode === 'warm' ? 'bg-[#fffbf7]' :
+              themeMode === 'dark' ? 'bg-[#242625]' :
+              'bg-white'
+            }`}>
               <span className="font-heading font-extrabold text-base text-[#ab3500]">
                 ${price.toFixed(2)}
               </span>
               {originalPrice && (
-                <span className="text-[11px] text-[#8d7168] line-through ml-1.5">
+                <span className={`text-[11px] line-through ml-1.5 ${
+                  themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                  themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                  'text-[#8d7168]'
+                }`}>
                   ${originalPrice.toFixed(2)}
                 </span>
               )}

@@ -3,11 +3,13 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import confetti from 'canvas-confetti';
+import { ForgotPasswordModal } from './ForgotPasswordModal';
 
 export const AuthModal: React.FC = () => {
-  const { isAuthModalOpen, setIsAuthModalOpen, setCustomerTab, showToast } = useApp();
+  const { isAuthModalOpen, setIsAuthModalOpen, setCustomerTab, showToast, themeMode } = useApp();
   
   const [tab, setTab] = useState<'signin' | 'signup'>('signin');
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   
   // Sign in / Sign up state
   const [email, setEmail] = useState('julian@greenbistro.com');
@@ -45,40 +47,67 @@ export const AuthModal: React.FC = () => {
       />
 
       {/* Modal Box */}
-      <div className="relative w-full max-w-md glass-panel rounded-3xl overflow-hidden shadow-2xl bg-white/95 border border-[#e1bfb5] p-6 sm:p-8 animate-in fade-in zoom-in-95 duration-200">
-        
+      <div className={`relative w-full max-w-md glass-panel rounded-3xl overflow-hidden shadow-2xl border p-6 sm:p-8 animate-in fade-in zoom-in-95 duration-200 ${
+        (themeMode === 'warm' ? 'bg-[#fffbf7]/95 border-[#d4c4b8]' :
+        themeMode === 'dark' ? 'bg-[#242625]/95 border-white/20' :
+        'bg-white/95 border-[#e1bfb5]')
+      }`}>        
         <button
           onClick={() => setIsAuthModalOpen(false)}
-          className="absolute top-5 right-5 w-8 h-8 rounded-full bg-[#f3f3f3] hover:bg-[#e8e8e8] flex items-center justify-center text-[#594139] transition-colors cursor-pointer"
+          className={`absolute top-5 right-5 w-8 h-8 rounded-full flex items-center justify-center transition-colors cursor-pointer ${
+            themeMode === 'warm' ? 'bg-[#f5ede4] hover:bg-[#e9ddcf] text-[#6b5a4a]' :
+            themeMode === 'dark' ? 'bg-[#2e302f] hover:bg-[#383a39] text-[#c4c4c4]' :
+            'bg-[#f3f3f3] hover:bg-[#e8e8e8] text-[#594139]'
+          }`}
         >
           <span className="material-symbols-outlined text-[18px]">close</span>
         </button>
 
         {/* Brand Header */}
         <div className="text-center space-y-1.5 mb-5">
-          <div className="w-12 h-12 rounded-2xl overflow-hidden border border-[#e1bfb5] mx-auto shadow-md">
+          <div className={`w-12 h-12 rounded-2xl overflow-hidden border mx-auto shadow-md ${
+            themeMode === 'warm' ? 'border-[#d4c4b8]' :
+            themeMode === 'dark' ? 'border-white/20' :
+            'border-[#e1bfb5]'
+          }`}>
             <img
               src="/umunthuhub-logo.png"
               alt="Umunthuhub-Foods"
               className="w-full h-full object-cover"
             />
           </div>
-          <h3 className="font-heading font-extrabold text-xl text-[#1a1c1c]">
+          <h3 className={`font-heading font-extrabold text-xl ${
+            themeMode === 'warm' ? 'text-[#3d2b1f]' :
+            themeMode === 'dark' ? 'text-[#f5f5f5]' :
+            'text-[#1a1c1c]'
+          }`}>
             {tab === 'signin' && 'Welcome Back'}
             {tab === 'signup' && 'Create Umunthuhub-Foods Account'}
           </h3>
-          <p className="text-xs text-[#594139]">
+          <p className={`text-xs ${
+            themeMode === 'warm' ? 'text-[#3d2b1f]' :
+            themeMode === 'dark' ? 'text-[#e5e5e5]' :
+            'text-[#1a1c1c]'
+          }`}>
             {tab === 'signin' && 'Access multi-tenant kitchens, live orders & loyalty rewards'}
             {tab === 'signup' && 'Join the culinary ecosystem as a foodie, merchant or rider'}
           </p>
         </div>
 
         {/* Tab Switcher */}
-        <div className="grid grid-cols-2 p-1 bg-[#f3f3f3] rounded-2xl border border-[#e1bfb5]/50 mb-5">
+        <div className={`grid grid-cols-2 p-1 rounded-2xl border mb-5 ${
+          themeMode === 'warm' ? 'bg-[#f5ede4] border-[#d4c4b8]/50' :
+          themeMode === 'dark' ? 'bg-[#2e302f] border-white/20' :
+          'bg-[#f3f3f3] border-[#e1bfb5]/50'
+        }`}>
           <button
             onClick={() => setTab('signin')}
             className={`py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
-              tab === 'signin' ? 'bg-white text-[#ab3500] shadow-sm' : 'text-[#594139] hover:text-[#1a1c1c]'
+              tab === 'signin'
+                ? themeMode === 'dark' ? 'bg-[#383a39] text-[#f5f5f5] shadow-sm' : 'bg-white text-[#ab3500] shadow-sm'
+                : themeMode === 'warm' ? 'text-[#3d2b1f] hover:text-[#2a1f16]' :
+                  themeMode === 'dark' ? 'text-[#e5e5e5] hover:text-[#f5f5f5]' :
+                  'text-[#1a1c1c] hover:text-[#0a0c0c]'
             }`}
           >
             Sign In
@@ -86,7 +115,11 @@ export const AuthModal: React.FC = () => {
           <button
             onClick={() => setTab('signup')}
             className={`py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
-              tab === 'signup' ? 'bg-white text-[#ab3500] shadow-sm' : 'text-[#594139] hover:text-[#1a1c1c]'
+              tab === 'signup'
+                ? themeMode === 'dark' ? 'bg-[#383a39] text-[#f5f5f5] shadow-sm' : 'bg-white text-[#ab3500] shadow-sm'
+                : themeMode === 'warm' ? 'text-[#3d2b1f] hover:text-[#2a1f16]' :
+                  themeMode === 'dark' ? 'text-[#e5e5e5] hover:text-[#f5f5f5]' :
+                  'text-[#1a1c1c] hover:text-[#0a0c0c]'
             }`}
           >
             Register
@@ -97,7 +130,11 @@ export const AuthModal: React.FC = () => {
         {tab === 'signin' && (
           <form onSubmit={handleSignIn} className="space-y-3.5">
             <div className="space-y-1">
-              <label className="font-heading font-bold text-xs text-[#1a1c1c]">Email Address</label>
+              <label className={`font-heading font-bold text-xs ${
+                themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                'text-[#1a1c1c]'
+              }`}>Email Address</label>
               <input
                 type="email"
                 required
@@ -109,7 +146,11 @@ export const AuthModal: React.FC = () => {
             </div>
 
             <div className="space-y-1">
-              <label className="font-heading font-bold text-xs text-[#1a1c1c]">Password</label>
+              <label className={`font-heading font-bold text-xs ${
+                themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                'text-[#1a1c1c]'
+              }`}>Password</label>
               <input
                 type="password"
                 required
@@ -121,7 +162,11 @@ export const AuthModal: React.FC = () => {
             </div>
 
             <div className="flex items-center justify-between text-xs pt-1">
-              <label className="flex items-center gap-2 cursor-pointer text-[#594139]">
+              <label className={`flex items-center gap-2 cursor-pointer ${
+                themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                themeMode === 'dark' ? 'text-[#e5e5e5]' :
+                'text-[#1a1c1c]'
+              }`}>
                 <input
                   type="checkbox"
                   checked={rememberMe}
@@ -130,11 +175,22 @@ export const AuthModal: React.FC = () => {
                 />
                 <span>Remember this device</span>
               </label>
+              <button
+                type="button"
+                onClick={() => setShowForgotPassword(true)}
+                className={`font-bold hover:underline cursor-pointer ${
+                  themeMode === 'warm' ? 'text-[#ab3500]' :
+                  themeMode === 'dark' ? 'text-[#ff6b35]' :
+                  'text-[#ab3500]'
+                }`}
+              >
+                Forgot Password?
+              </button>
             </div>
 
             <button
               type="submit"
-              className="w-full py-3 rounded-2xl glass-button-primary font-heading font-bold text-xs shadow-lg shadow-[#ab3500]/25 transition-all mt-2 cursor-pointer hover:scale-[1.01]"
+              className="w-full py-3 rounded-2xl bg-[#ab3500] hover:bg-[#8a2a00] text-white font-heading font-bold text-xs shadow-lg shadow-[#ab3500]/25 transition-all mt-2 cursor-pointer hover:scale-[1.01]"
             >
               Sign In to Account
             </button>
@@ -145,7 +201,11 @@ export const AuthModal: React.FC = () => {
         {tab === 'signup' && (
           <form onSubmit={handleSignUp} className="space-y-3.5">
             <div className="space-y-1">
-              <label className="font-heading font-bold text-xs text-[#1a1c1c]">Full Name *</label>
+              <label className={`font-heading font-bold text-xs ${
+                themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                'text-[#1a1c1c]'
+              }`}>Full Name *</label>
               <input
                 type="text"
                 required
@@ -157,7 +217,11 @@ export const AuthModal: React.FC = () => {
             </div>
 
             <div className="space-y-1">
-              <label className="font-heading font-bold text-xs text-[#1a1c1c]">Email Address *</label>
+              <label className={`font-heading font-bold text-xs ${
+                themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                'text-[#1a1c1c]'
+              }`}>Email Address *</label>
               <input
                 type="email"
                 required
@@ -169,7 +233,11 @@ export const AuthModal: React.FC = () => {
             </div>
 
             <div className="space-y-1">
-              <label className="font-heading font-bold text-xs text-[#1a1c1c]">Password *</label>
+              <label className={`font-heading font-bold text-xs ${
+                themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                'text-[#1a1c1c]'
+              }`}>Password *</label>
               <input
                 type="password"
                 required
@@ -180,13 +248,17 @@ export const AuthModal: React.FC = () => {
               />
             </div>
 
-            <div className="text-[11px] text-[#594139] leading-tight">
+            <div className={`text-[11px] leading-tight ${
+              themeMode === 'warm' ? 'text-[#3d2b1f]' :
+              themeMode === 'dark' ? 'text-[#e5e5e5]' :
+              'text-[#1a1c1c]'
+            }`}>
               By creating an account, you agree to Umunthuhub-Foods' <span className="text-[#ab3500] font-semibold">Terms of Service</span> and <span className="text-[#ab3500] font-semibold">Privacy Policy</span>.
             </div>
 
             <button
               type="submit"
-              className="w-full py-3 rounded-2xl glass-button-primary font-heading font-bold text-xs shadow-lg shadow-[#ab3500]/25 transition-all mt-2 cursor-pointer"
+              className="w-full py-3 rounded-2xl bg-[#ab3500] hover:bg-[#8a2a00] text-white font-heading font-bold text-xs shadow-lg shadow-[#ab3500]/25 transition-all mt-2 cursor-pointer"
             >
               Create Account & Unlock Perks
             </button>
@@ -194,6 +266,13 @@ export const AuthModal: React.FC = () => {
         )}
 
       </div>
+
+      {/* Forgot Password Modal */}
+      <ForgotPasswordModal
+        isOpen={showForgotPassword}
+        onClose={() => setShowForgotPassword(false)}
+        onBackToSignIn={() => setShowForgotPassword(false)}
+      />
     </div>
   );
 };

@@ -11,11 +11,14 @@ export const OrderTrackingView: React.FC = () => {
     orders,
     setActiveOrder,
     setPersona,
-    setVendorTab
+    setVendorTab,
+    themeMode
   } = useApp();
 
   const [etaMinutes, setEtaMinutes] = useState(18);
   const [isCallingRider, setIsCallingRider] = useState(false);
+  const [isCallConnected, setIsCallConnected] = useState(false);
+  const [callDuration, setCallDuration] = useState(0);
   const [chatMessage, setChatMessage] = useState('');
   const [chatHistory, setChatHistory] = useState([
     { sender: 'rider', text: 'Hi! I have just arrived at the restaurant. Will head your way as soon as the kitchen seals the bag!', time: '11:46 AM' }
@@ -32,12 +35,47 @@ export const OrderTrackingView: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
+  // Call duration timer
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isCallConnected) {
+      interval = setInterval(() => {
+        setCallDuration(prev => prev + 1);
+      }, 1000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isCallConnected]);
+
+  const formatCallDuration = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
   if (!order) {
     return (
-      <div className="text-center py-20 glass-panel rounded-3xl p-8 border border-[#e1bfb5]/50 space-y-4 max-w-md mx-auto">
-        <span className="material-symbols-outlined text-4xl text-[#8d7168]">local_shipping</span>
-        <h2 className="font-heading font-extrabold text-lg text-[#1a1c1c]">No Active Orders</h2>
-        <p className="text-xs text-[#594139]">You don't have any active deliveries at the moment.</p>
+      <div className={`text-center py-20 glass-panel rounded-3xl p-8 border space-y-4 max-w-md mx-auto ${
+        themeMode === 'warm' ? 'border-[#d4c4b8]/50' :
+        themeMode === 'dark' ? 'border-white/20' :
+        'border-[#e1bfb5]/50'
+      }`}>
+        <span className={`material-symbols-outlined text-4xl ${
+          themeMode === 'warm' ? 'text-[#6b5a4a]' :
+          themeMode === 'dark' ? 'text-[#c4c4c4]' :
+          'text-[#8d7168]'
+        }`}>local_shipping</span>
+        <h2 className={`font-heading font-extrabold text-lg ${
+          themeMode === 'warm' ? 'text-[#3d2b1f]' :
+          themeMode === 'dark' ? 'text-[#f5f5f5]' :
+          'text-[#1a1c1c]'
+        }`}>No Active Orders</h2>
+        <p className={`text-xs ${
+          themeMode === 'warm' ? 'text-[#6b5a4a]' :
+          themeMode === 'dark' ? 'text-[#c4c4c4]' :
+          'text-[#594139]'
+        }`}>You don't have any active deliveries at the moment.</p>
         <button
           onClick={() => setCustomerTab('home')}
           className="px-5 py-2 rounded-xl glass-button-primary text-xs font-bold"
@@ -94,15 +132,31 @@ export const OrderTrackingView: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="font-heading font-extrabold text-2xl sm:text-3xl text-[#1a1c1c]">
+            <span className={`font-heading font-extrabold text-2xl sm:text-3xl ${
+              themeMode === 'warm' ? 'text-[#3d2b1f]' :
+              themeMode === 'dark' ? 'text-[#f5f5f5]' :
+              'text-[#1a1c1c]'
+            }`}>
               Live Order Tracking
             </span>
-            <span className="px-2.5 py-1 rounded-xl bg-[#ff6b35]/15 text-[#ab3500] text-xs font-mono font-extrabold border border-[#e1bfb5]">
+            <span className={`px-2.5 py-1 rounded-xl text-[#ab3500] text-xs font-mono font-extrabold border ${
+              themeMode === 'warm' ? 'bg-[#ff6b35]/15 border-[#d4c4b8]' :
+              themeMode === 'dark' ? 'bg-[#ff6b35]/15 border-white/30' :
+              'bg-[#ff6b35]/15 border-[#e1bfb5]'
+            }`}>
               {order.orderNumber}
             </span>
           </div>
-          <p className="text-xs text-[#594139] mt-0.5">
-            Ordered from <span className="font-bold text-[#1a1c1c]">{order.tenantName}</span> • Estimated Delivery: <span className="font-bold text-[#006c4f]">{order.estimatedDeliveryTime}</span>
+          <p className={`text-xs mt-0.5 ${
+            themeMode === 'warm' ? 'text-[#6b5a4a]' :
+            themeMode === 'dark' ? 'text-[#c4c4c4]' :
+            'text-[#594139]'
+          }`}>
+            Ordered from <span className={`font-bold ${
+              themeMode === 'warm' ? 'text-[#3d2b1f]' :
+              themeMode === 'dark' ? 'text-[#f5f5f5]' :
+              'text-[#1a1c1c]'
+            }`}>{order.tenantName}</span> • Estimated Delivery: <span className="font-bold text-[#006c4f]">{order.estimatedDeliveryTime}</span>
           </p>
         </div>
 
@@ -123,7 +177,11 @@ export const OrderTrackingView: React.FC = () => {
 
           <button
             onClick={() => setCustomerTab('home')}
-            className="px-3.5 py-2 rounded-xl bg-white hover:bg-[#f3f3f3] border border-[#e1bfb5]/60 text-[#594139] text-xs font-bold transition-colors cursor-pointer"
+            className={`px-3.5 py-2 rounded-xl border text-xs font-bold transition-colors cursor-pointer ${
+              themeMode === 'warm' ? 'bg-[#fffbf7] hover:bg-[#f5ede4] border-[#d4c4b8]/60 text-[#6b5a4a]' :
+              themeMode === 'dark' ? 'bg-[#242625] hover:bg-[#2e302f] border-white/20 text-[#c4c4c4]' :
+              'bg-white hover:bg-[#f3f3f3] border-[#e1bfb5]/60 text-[#594139]'
+            }`}
           >
             Order More
           </button>
@@ -137,16 +195,28 @@ export const OrderTrackingView: React.FC = () => {
         <div className="lg:col-span-7 space-y-6">
           
           {/* Status Stepper Card */}
-          <div className="glass-panel rounded-3xl p-5 sm:p-6 border border-[#e1bfb5]/50 space-y-6">
+          <div className={`glass-panel rounded-3xl p-5 sm:p-6 border space-y-6 ${
+            themeMode === 'warm' ? 'border-[#d4c4b8]/50' :
+            themeMode === 'dark' ? 'border-white/20' :
+            'border-[#e1bfb5]/50'
+          }`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full bg-[#00ae81] animate-ping" />
-                <span className="font-heading font-extrabold text-sm text-[#1a1c1c] uppercase tracking-wider">
+                <span className={`font-heading font-extrabold text-sm uppercase tracking-wider ${
+                  themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                  themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                  'text-[#1a1c1c]'
+                }`}>
                   {order.status.replace('_', ' ')}
                 </span>
               </div>
               <div className="text-right">
-                <span className="text-xs text-[#8d7168]">Estimated Arrival</span>
+                <span className={`text-xs ${
+                  themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                  themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                  'text-[#8d7168]'
+                }`}>Estimated Arrival</span>
                 <p className="font-heading font-extrabold text-base text-[#ab3500]">
                   {order.status === 'delivered' ? 'Delivered 🎉' : `In ${etaMinutes} mins`}
                 </p>
@@ -155,10 +225,14 @@ export const OrderTrackingView: React.FC = () => {
 
             {/* Stepper Bar */}
             <div className="relative">
-              <div className="overflow-hidden h-2 mb-4 text-xs flex rounded-full bg-[#eeeeee]">
+              <div className={`overflow-hidden h-2 mb-4 text-xs flex rounded-full ${
+                themeMode === 'warm' ? 'bg-[#e9ddcf]' :
+                themeMode === 'dark' ? 'bg-[#383a39]' :
+                'bg-[#eeeeee]'
+              }`}>
                 <div 
                   style={{ width: `${((currentStepIdx + 1) / steps.length) * 100}%` }}
-                  className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-[#ff6b35] to-[#ab3500] transition-all duration-500"
+                  className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-linear-to-r from-[#ff6b35] to-[#ab3500] transition-all duration-500"
                 />
               </div>
 
@@ -178,7 +252,9 @@ export const OrderTrackingView: React.FC = () => {
                         <span className="material-symbols-outlined text-[16px]">{step.icon}</span>
                       </div>
                       <p className={`text-[10px] font-bold leading-tight line-clamp-1 ${
-                        isCurrent ? 'text-[#ab3500]' : isCompleted ? 'text-[#1a1c1c]' : 'text-[#8d7168]'
+                        isCurrent ? 'text-[#ab3500]' :
+                        isCompleted ? (themeMode === 'warm' ? 'text-[#3d2b1f]' : themeMode === 'dark' ? 'text-[#f5f5f5]' : 'text-[#1a1c1c]') :
+                        (themeMode === 'warm' ? 'text-[#6b5a4a]' : themeMode === 'dark' ? 'text-[#c4c4c4]' : 'text-[#8d7168]')
                       }`}>
                         {step.label}
                       </p>
@@ -190,9 +266,17 @@ export const OrderTrackingView: React.FC = () => {
           </div>
 
           {/* Interactive Simulated Live Map Container */}
-          <div className="glass-panel rounded-3xl p-5 border border-[#e1bfb5]/50 space-y-3">
+          <div className={`glass-panel rounded-3xl p-5 border space-y-3 ${
+            themeMode === 'warm' ? 'border-[#d4c4b8]/50' :
+            themeMode === 'dark' ? 'border-white/20' :
+            'border-[#e1bfb5]/50'
+          }`}>
             <div className="flex items-center justify-between">
-              <h3 className="font-heading font-bold text-xs text-[#1a1c1c] flex items-center gap-1.5">
+              <h3 className={`font-heading font-bold text-xs flex items-center gap-1.5 ${
+                themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                'text-[#1a1c1c]'
+              }`}>
                 <span className="material-symbols-outlined text-[#24619d] text-[18px]">satellite_alt</span>
                 GPS Live Dispatch Radar
               </h3>
@@ -202,9 +286,15 @@ export const OrderTrackingView: React.FC = () => {
             </div>
 
             {/* Simulated Map Canvas */}
-            <div className="relative h-64 sm:h-72 w-full rounded-2xl overflow-hidden bg-[#e8edf2] border border-[#e1bfb5]/50 shadow-inner">
+            <div className={`relative h-64 sm:h-72 w-full rounded-2xl overflow-hidden border shadow-inner ${
+              themeMode === 'warm' ? 'bg-[#e9ddcf] border-[#d4c4b8]/50' :
+              themeMode === 'dark' ? 'bg-[#1a1c1c] border-white/20' :
+              'bg-[#e8edf2] border-[#e1bfb5]/50'
+            }`}>
               {/* Street grid background */}
-              <div className="absolute inset-0 bg-[linear-gradient(to_right,#cbd5e1_1px,transparent_1px),linear-gradient(to_bottom,#cbd5e1_1px,transparent_1px)] bg-[size:32px_32px] opacity-40" />
+              <div className={`absolute inset-0 bg-[linear-gradient(to_right,#cbd5e1_1px,transparent_1px),linear-gradient(to_bottom,#cbd5e1_1px,transparent_1px)] bg-size-[32px_32px] ${
+                themeMode === 'dark' ? 'opacity-20' : 'opacity-40'
+              }`} />
               
               {/* Route Line SVG */}
               <svg className="absolute inset-0 w-full h-full pointer-events-none">
@@ -220,7 +310,11 @@ export const OrderTrackingView: React.FC = () => {
 
               {/* Restaurant Pin */}
               <div className="absolute top-12 left-10 flex flex-col items-center">
-                <div className="px-2 py-0.5 rounded bg-white shadow-md text-[9px] font-extrabold text-[#24619d] border border-[#e1bfb5] whitespace-nowrap">
+                <div className={`px-2 py-0.5 rounded shadow-md text-[9px] font-extrabold text-[#24619d] border whitespace-nowrap ${
+                  themeMode === 'warm' ? 'bg-[#fffbf7] border-[#d4c4b8]' :
+                  themeMode === 'dark' ? 'bg-[#242625] border-white/30' :
+                  'bg-white border-[#e1bfb5]'
+                }`}>
                   {order.tenantName}
                 </div>
                 <div className="w-8 h-8 rounded-full bg-[#24619d] text-white flex items-center justify-center shadow-md">
@@ -236,7 +330,7 @@ export const OrderTrackingView: React.FC = () => {
                 </div>
                 <div className="relative mt-1">
                   <span className="absolute -inset-1 rounded-full bg-[#ff6b35]/40 animate-ping" />
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#ff6b35] to-[#ab3500] text-white flex items-center justify-center shadow-xl border-2 border-white relative z-10">
+                  <div className="w-9 h-9 rounded-full bg-linear-to-tr from-[#ff6b35] to-[#ab3500] text-white flex items-center justify-center shadow-xl border-2 border-white relative z-10">
                     <span className="material-symbols-outlined text-[18px]">two_wheeler</span>
                   </div>
                 </div>
@@ -244,7 +338,11 @@ export const OrderTrackingView: React.FC = () => {
 
               {/* Customer Delivery Pin */}
               <div className="absolute bottom-6 right-10 flex flex-col items-center">
-                <div className="px-2 py-0.5 rounded bg-white shadow-md text-[9px] font-extrabold text-[#006c4f] border border-[#e1bfb5] whitespace-nowrap">
+                <div className={`px-2 py-0.5 rounded shadow-md text-[9px] font-extrabold text-[#006c4f] border whitespace-nowrap ${
+                  themeMode === 'warm' ? 'bg-[#fffbf7] border-[#d4c4b8]' :
+                  themeMode === 'dark' ? 'bg-[#242625] border-white/30' :
+                  'bg-white border-[#e1bfb5]'
+                }`}>
                   742 Evergreen Terrace (You)
                 </div>
                 <div className="w-8 h-8 rounded-full bg-[#006c4f] text-white flex items-center justify-center shadow-md">
@@ -253,7 +351,11 @@ export const OrderTrackingView: React.FC = () => {
               </div>
 
               {/* Map Floating Tools */}
-              <div className="absolute bottom-3 left-3 px-3 py-1.5 rounded-xl bg-white/90 backdrop-blur-md text-[10px] font-bold text-[#1a1c1c] shadow-md border border-[#e1bfb5]/50 flex items-center gap-2">
+              <div className={`absolute bottom-3 left-3 px-3 py-1.5 rounded-xl backdrop-blur-md text-[10px] font-bold shadow-md border flex items-center gap-2 ${
+                themeMode === 'warm' ? 'bg-[#fffbf7]/90 text-[#3d2b1f] border-[#d4c4b8]/50' :
+                themeMode === 'dark' ? 'bg-[#242625]/90 text-[#f5f5f5] border-white/20' :
+                'bg-white/90 text-[#1a1c1c] border-[#e1bfb5]/50'
+              }`}>
                 <span className="w-2 h-2 rounded-full bg-[#00ae81]" />
                 <span>Speed: 28 km/h • 1.4 km remaining</span>
               </div>
@@ -266,9 +368,17 @@ export const OrderTrackingView: React.FC = () => {
         <div className="lg:col-span-5 space-y-6">
           
           {/* Courier Card */}
-          <div className="glass-panel rounded-3xl p-5 border border-[#e1bfb5]/50 space-y-4">
+          <div className={`glass-panel rounded-3xl p-5 border space-y-4 ${
+            themeMode === 'warm' ? 'border-[#d4c4b8]/50' :
+            themeMode === 'dark' ? 'border-white/20' :
+            'border-[#e1bfb5]/50'
+          }`}>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-[#8d7168] uppercase tracking-wider">
+              <span className={`text-xs font-bold uppercase tracking-wider ${
+                themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                'text-[#8d7168]'
+              }`}>
                 Assigned Delivery Partner
               </span>
               <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#00ae81]/15 text-[#006c4f]">
@@ -283,12 +393,24 @@ export const OrderTrackingView: React.FC = () => {
                 className="w-14 h-14 rounded-2xl object-cover border-2 border-white shadow-md"
               />
               <div className="flex-1 min-w-0">
-                <h4 className="font-heading font-extrabold text-sm text-[#1a1c1c]">
+                <h4 className={`font-heading font-extrabold text-sm ${
+                  themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                  themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                  'text-[#1a1c1c]'
+                }`}>
                   {order.riderName || 'Grayson Comrade'}
                 </h4>
-                <div className="flex items-center gap-1.5 text-xs text-[#594139] mt-0.5">
+                <div className={`flex items-center gap-1.5 text-xs mt-0.5 ${
+                  themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                  themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                  'text-[#594139]'
+                }`}>
                   <span className="material-symbols-outlined text-[14px] text-amber-500 fill-1">star</span>
-                  <span className="font-bold text-[#1a1c1c]">{order.riderRating || 4.98}</span>
+                  <span className={`font-bold ${
+                    themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                    themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                    'text-[#1a1c1c]'
+                  }`}>{order.riderRating || 4.98}</span>
                   <span>• {order.riderVehicle || 'Yamaha E-Moped (UMN-582)'}</span>
                 </div>
                 <p className="text-[11px] text-[#006c4f] font-medium mt-0.5">
@@ -302,14 +424,40 @@ export const OrderTrackingView: React.FC = () => {
               <button
                 type="button"
                 onClick={() => {
-                  setIsCallingRider(true);
-                  showToast('Calling Rider', 'Connecting encrypted line to courier Leo V...', 'info');
-                  setTimeout(() => setIsCallingRider(false), 3000);
+                  if (isCallConnected) {
+                    // End call
+                    setIsCallConnected(false);
+                    setCallDuration(0);
+                    showToast('Call Ended', 'Call with courier ended', 'info');
+                  } else if (!isCallingRider) {
+                    // Start call
+                    setIsCallingRider(true);
+                    showToast('Calling Rider', 'Connecting encrypted line to courier Leo V...', 'info');
+                    
+                    // Simulate connecting after 2 seconds
+                    setTimeout(() => {
+                      setIsCallingRider(false);
+                      setIsCallConnected(true);
+                      showToast('Connected', 'Call connected with courier Leo V.', 'success');
+                    }, 2000);
+                  }
                 }}
-                className="py-2.5 px-3 rounded-xl bg-[#f3f3f3] hover:bg-[#e8e8e8] text-xs font-bold text-[#1a1c1c] flex items-center justify-center gap-1.5 transition-colors border border-[#e1bfb5]/50 cursor-pointer"
+                className={`py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors border cursor-pointer ${
+                  isCallConnected
+                    ? 'bg-red-500 hover:bg-red-600 text-white border-red-500'
+                    : isCallingRider
+                      ? 'bg-[#ab3500] text-white border-[#ab3500] animate-pulse'
+                      : themeMode === 'warm' ? 'bg-[#f5ede4] hover:bg-[#e9ddcf] text-[#3d2b1f] border-[#d4c4b8]/50' :
+                        themeMode === 'dark' ? 'bg-[#2e302f] hover:bg-[#383a39] text-[#f5f5f5] border-white/20' :
+                        'bg-[#f3f3f3] hover:bg-[#e8e8e8] text-[#1a1c1c] border-[#e1bfb5]/50'
+                }`}
               >
-                <span className="material-symbols-outlined text-[18px] text-[#006c4f]">call</span>
-                <span>{isCallingRider ? 'Calling...' : 'Call Driver'}</span>
+                <span className="material-symbols-outlined text-[18px]">
+                  {isCallConnected ? 'call_end' : 'call'}
+                </span>
+                <span>
+                  {isCallingRider ? 'Calling...' : isCallConnected ? formatCallDuration(callDuration) : 'Call Driver'}
+                </span>
               </button>
 
               <button
@@ -324,10 +472,26 @@ export const OrderTrackingView: React.FC = () => {
 
             {/* Courier Chat Drawer Inline */}
             {isChatOpen && (
-              <div className="p-3.5 bg-[#f9f9f9] rounded-2xl border border-[#e1bfb5]/50 space-y-3 animate-in fade-in duration-150">
-                <div className="flex items-center justify-between pb-1 border-b border-[#e1bfb5]/30">
-                  <span className="text-[11px] font-bold text-[#1a1c1c]">Direct Chat with Leo V.</span>
-                  <button onClick={() => setIsChatOpen(false)} className="text-[11px] text-[#8d7168] hover:underline">
+              <div className={`p-3.5 rounded-2xl border space-y-3 animate-in fade-in duration-150 ${
+                themeMode === 'warm' ? 'bg-[#fffbf7] border-[#d4c4b8]/50' :
+                themeMode === 'dark' ? 'bg-[#242625] border-white/20' :
+                'bg-[#f9f9f9] border-[#e1bfb5]/50'
+              }`}>
+                <div className={`flex items-center justify-between pb-1 border-b ${
+                  themeMode === 'warm' ? 'border-b-[#d4c4b8]/30' :
+                  themeMode === 'dark' ? 'border-b-white/20' :
+                  'border-b-[#e1bfb5]/30'
+                }`}>
+                  <span className={`text-[11px] font-bold ${
+                    themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                    themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                    'text-[#1a1c1c]'
+                  }`}>Direct Chat with Leo V.</span>
+                  <button onClick={() => setIsChatOpen(false)} className={`text-[11px] hover:underline ${
+                    themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                    themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                    'text-[#8d7168]'
+                  }`}>
                     Close
                   </button>
                 </div>
@@ -339,7 +503,9 @@ export const OrderTrackingView: React.FC = () => {
                       className={`p-2.5 rounded-xl text-xs max-w-[85%] ${
                         msg.sender === 'customer'
                           ? 'ml-auto bg-[#ab3500] text-white rounded-br-none'
-                          : 'bg-white text-[#1a1c1c] border border-[#e1bfb5]/40 rounded-bl-none'
+                          : themeMode === 'warm' ? 'bg-[#fffbf7] text-[#3d2b1f] border border-[#d4c4b8]/40 rounded-bl-none' :
+                          themeMode === 'dark' ? 'bg-[#242625] text-[#f5f5f5] border border-white/20 rounded-bl-none' :
+                          'bg-white text-[#1a1c1c] border border-[#e1bfb5]/40 rounded-bl-none'
                       }`}
                     >
                       <p>{msg.text}</p>
@@ -368,8 +534,16 @@ export const OrderTrackingView: React.FC = () => {
           </div>
 
           {/* Itemized Order Receipt */}
-          <div className="glass-panel rounded-3xl p-5 border border-[#e1bfb5]/50 space-y-4">
-            <h4 className="font-heading font-bold text-xs text-[#1a1c1c] uppercase tracking-wider pb-2 border-b border-[#e1bfb5]/40">
+          <div className={`glass-panel rounded-3xl p-5 border space-y-4 ${
+            themeMode === 'warm' ? 'border-[#d4c4b8]/50' :
+            themeMode === 'dark' ? 'border-white/20' :
+            'border-[#e1bfb5]/50'
+          }`}>
+            <h4 className={`font-heading font-bold text-xs uppercase tracking-wider pb-2 border-b ${
+              themeMode === 'warm' ? 'text-[#3d2b1f] border-b-[#d4c4b8]/40' :
+              themeMode === 'dark' ? 'text-[#f5f5f5] border-b-white/20' :
+              'text-[#1a1c1c] border-b-[#e1bfb5]/40'
+            }`}>
               Receipt & Item Breakdown
             </h4>
 
@@ -377,26 +551,50 @@ export const OrderTrackingView: React.FC = () => {
               {order.items.map((item, idx) => (
                 <div key={idx} className="flex justify-between items-start">
                   <div>
-                    <span className="font-bold text-[#1a1c1c]">{item.quantity}x {item.name}</span>
+                    <span className={`font-bold ${
+                      themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                      themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                      'text-[#1a1c1c]'
+                    }`}>{item.quantity}x {item.name}</span>
                     {item.specialInstructions && (
                       <p className="text-[10px] text-[#006c4f] italic">{item.specialInstructions}</p>
                     )}
                   </div>
-                  <span className="font-bold text-[#1a1c1c]">${(item.price * item.quantity).toFixed(2)}</span>
+                  <span className={`font-bold ${
+                    themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                    themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                    'text-[#1a1c1c]'
+                  }`}>${(item.price * item.quantity).toFixed(2)}</span>
                 </div>
               ))}
             </div>
 
-            <div className="pt-3 border-t border-[#e1bfb5]/40 space-y-1.5 text-xs">
-              <div className="flex justify-between text-[#594139]">
+            <div className={`pt-3 border-t space-y-1.5 text-xs ${
+              themeMode === 'warm' ? 'border-t-[#d4c4b8]/40' :
+              themeMode === 'dark' ? 'border-t-white/20' :
+              'border-t-[#e1bfb5]/40'
+            }`}>
+              <div className={`flex justify-between ${
+                themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                'text-[#594139]'
+              }`}>
                 <span>Subtotal</span>
                 <span>${order.subtotal.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-[#594139]">
+              <div className={`flex justify-between ${
+                themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                'text-[#594139]'
+              }`}>
                 <span>Delivery & Courier Fee</span>
                 <span>${order.deliveryFee.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-[#594139]">
+              <div className={`flex justify-between ${
+                themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                'text-[#594139]'
+              }`}>
                 <span>Driver Tip</span>
                 <span>${order.tip.toFixed(2)}</span>
               </div>
@@ -406,7 +604,11 @@ export const OrderTrackingView: React.FC = () => {
                   <span>-${order.discount.toFixed(2)}</span>
                 </div>
               )}
-              <div className="pt-2 border-t border-[#e1bfb5]/40 flex justify-between font-heading font-extrabold text-sm text-[#1a1c1c]">
+              <div className={`pt-2 border-t flex justify-between font-heading font-extrabold text-sm ${
+                themeMode === 'warm' ? 'border-t-[#d4c4b8]/40 text-[#3d2b1f]' :
+                themeMode === 'dark' ? 'border-t-white/20 text-[#f5f5f5]' :
+                'border-t-[#e1bfb5]/40 text-[#1a1c1c]'
+              }`}>
                 <span>Paid via {order.paymentMethod.replace('_', ' ').toUpperCase()}</span>
                 <span className="text-[#ab3500]">${order.total.toFixed(2)}</span>
               </div>
@@ -415,7 +617,11 @@ export const OrderTrackingView: React.FC = () => {
             <div className="pt-2 text-center">
               <button
                 onClick={() => showToast('Help Desk', 'Connecting to order resolution supervisor...', 'info')}
-                className="text-xs text-[#8d7168] hover:text-[#ab3500] font-semibold underline"
+                className={`text-xs font-semibold underline ${
+                  themeMode === 'warm' ? 'text-[#6b5a4a] hover:text-[#ab3500]' :
+                  themeMode === 'dark' ? 'text-[#c4c4c4] hover:text-[#ab3500]' :
+                  'text-[#8d7168] hover:text-[#ab3500]'
+                }`}
               >
                 Having an issue with this order? Report to Help Desk
               </button>

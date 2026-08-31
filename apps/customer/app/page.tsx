@@ -19,7 +19,8 @@ const MainAppContent: React.FC = () => {
   const {
     customerTab,
     toasts,
-    dismissToast
+    dismissToast,
+    themeMode
   } = useApp();
 
   const renderActiveView = () => {
@@ -40,8 +41,14 @@ const MainAppContent: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 bg-[#fcf9f8] text-[#1a1c1c] font-body selection:bg-[#ab3500] selection:text-white flex flex-col transition-colors duration-300 overflow-x-hidden">
-      <Header />
+    <>
+      <div className="theme-transition-overlay" id="theme-transition-overlay" />
+      <div className={`flex-1 font-body selection:bg-[#ab3500] selection:text-white flex flex-col transition-colors duration-300 overflow-x-hidden ${
+        themeMode === 'warm' ? 'bg-[#faf5f0] text-[#3d2b1f]' :
+        themeMode === 'dark' ? 'bg-[#1a1c1c] text-[#f5f5f5]' :
+        'bg-[#fcf9f8] text-[#1a1c1c]'
+      }`} data-theme-aware>
+        <Header />
 
       <div className="flex-1 max-w-384 w-full mx-auto px-2 sm:px-4 lg:px-6 pt-24 pb-4 sm:pb-5 overflow-x-hidden">
         <main className="w-full">
@@ -62,10 +69,18 @@ const MainAppContent: React.FC = () => {
               key={toast.id}
               onClick={() => dismissToast(toast.id)}
               className={`pointer-events-auto p-4 rounded-2xl shadow-2xl backdrop-blur-xl border flex items-start gap-3 cursor-pointer transition-all animate-in fade-in slide-in-from-bottom-5 duration-300 ${
-                toast.type === 'success' ? 'bg-white/95 border-[#00ae81]/50 text-[#1a1c1c]' :
-                toast.type === 'warning' ? 'bg-white/95 border-amber-400 text-[#1a1c1c]' :
-                toast.type === 'error' ? 'bg-white/95 border-[#ba1a1a] text-[#ba1a1a]' :
-                'bg-white/95 border-[#24619d]/50 text-[#1a1c1c]'
+                themeMode === 'warm' ? 'bg-[#fffbf7]/95' :
+                themeMode === 'dark' ? 'bg-[#242625]/95' :
+                'bg-white/95'
+              } ${
+                toast.type === 'success' ? 'border-[#00ae81]/50' :
+                toast.type === 'warning' ? 'border-amber-400' :
+                toast.type === 'error' ? 'border-[#ba1a1a]' :
+                'border-[#24619d]/50'
+              } ${
+                themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                'text-[#1a1c1c]'
               }`}
             >
               <span className={`material-symbols-outlined text-[20px] ${
@@ -79,10 +94,22 @@ const MainAppContent: React.FC = () => {
                  toast.type === 'error' ? 'error' : 'info'}
               </span>
               <div className="flex-1">
-                <h4 className="font-heading font-bold text-xs text-[#1a1c1c]">{toast.title}</h4>
-                <p className="text-[11px] text-[#594139] mt-0.5">{toast.message}</p>
+                <h4 className={`font-heading font-bold text-xs ${
+                  themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                  themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                  'text-[#1a1c1c]'
+                }`}>{toast.title}</h4>
+                <p className={`text-[11px] mt-0.5 ${
+                  themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                  themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                  'text-[#594139]'
+                }`}>{toast.message}</p>
               </div>
-              <button className="text-[#8d7168] hover:text-[#1a1c1c]">
+              <button className={`${
+                themeMode === 'warm' ? 'text-[#6b5a4a] hover:text-[#3d2b1f]' :
+                themeMode === 'dark' ? 'text-[#c4c4c4] hover:text-[#f5f5f5]' :
+                'text-[#8d7168] hover:text-[#1a1c1c]'
+              }`}>
                 <span className="material-symbols-outlined text-[14px]">close</span>
               </button>
             </div>
@@ -90,6 +117,7 @@ const MainAppContent: React.FC = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

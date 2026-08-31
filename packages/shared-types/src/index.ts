@@ -4,7 +4,7 @@ export type CustomerTab = 'home' | 'search' | 'restaurant' | 'checkout' | 'track
 export type VendorTab = 'dashboard' | 'kds' | 'menu' | 'promotions' | 'onboarding' | 'setup_wizard';
 export type RiderTab = 'radar' | 'active_job' | 'earnings' | 'rewards' | 'profile';
 export type AdminTab = 'overview' | 'venues' | 'staff' | 'team' | 'billing' | 'payouts' | 'support' | 'settings' | 'profile' | 'store_wizard' | 'auth' | 'store_selector' | 'tenants';
-export type CorporateTab = 'catalog' | 'team_orders' | 'subscriptions' | 'invoices';
+export type CorporateTab = 'home' | 'catalog' | 'team_orders' | 'subscriptions' | 'invoices';
 
 export type SetupStep = 'org_creation' | 'store_details' | 'operations' | 'products_staff' | 'completed';
 

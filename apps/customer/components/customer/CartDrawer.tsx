@@ -17,7 +17,8 @@ export const CartDrawer: React.FC = () => {
     appliedPromo,
     applyPromoCode,
     removePromoCode,
-    setCustomerTab
+    setCustomerTab,
+    themeMode
   } = useApp();
 
   const [promoInput, setPromoInput] = useState('');
@@ -61,22 +62,42 @@ export const CartDrawer: React.FC = () => {
       />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md glass-panel rounded-l-3xl shadow-2xl flex flex-col bg-white/95 border-l border-[#e1bfb5]">
+        <div className={`w-screen max-w-md glass-panel rounded-l-3xl shadow-2xl flex flex-col border-l ${
+          themeMode === 'warm' ? 'bg-[#fffbf7]/95 border-l-[#d4c4b8]' :
+          themeMode === 'dark' ? 'bg-[#242625]/95 border-l-white/20' :
+          'bg-white/95 border-l-[#e1bfb5]'
+        }`}>
           
           {/* Drawer Header */}
-          <div className="p-5 border-b border-[#e1bfb5]/40 flex items-center justify-between">
+          <div className={`p-5 border-b flex items-center justify-between ${
+            themeMode === 'warm' ? 'border-b-[#d4c4b8]/40' :
+            themeMode === 'dark' ? 'border-b-white/20' :
+            'border-b-[#e1bfb5]/40'
+          }`}>
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-[#ff6b35]/15 flex items-center justify-center text-[#ab3500]">
                 <span className="material-symbols-outlined text-[22px]">shopping_bag</span>
               </div>
               <div>
-                <h3 className="font-heading font-bold text-base text-[#1a1c1c]">Your Order Tray</h3>
-                <p className="text-xs text-[#594139]">{selectedRestaurant.name}</p>
+                <h3 className={`font-heading font-bold text-base ${
+                  themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                  themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                  'text-[#1a1c1c]'
+                }`}>Your Order Tray</h3>
+                <p className={`text-xs ${
+                  themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                  themeMode === 'dark' ? 'text-[#e5e5e5]' :
+                  'text-[#1a1c1c]'
+                }`}>{selectedRestaurant.name}</p>
               </div>
             </div>
             <button
               onClick={() => setIsCartDrawerOpen(false)}
-              className="w-8 h-8 rounded-full bg-[#f3f3f3] hover:bg-[#e8e8e8] flex items-center justify-center text-[#594139] transition-colors"
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                themeMode === 'warm' ? 'bg-[#f5ede4] hover:bg-[#e9ddcf] text-[#6b5a4a]' :
+                themeMode === 'dark' ? 'bg-[#2e302f] hover:bg-[#383a39] text-[#c4c4c4]' :
+                'bg-[#f3f3f3] hover:bg-[#e8e8e8] text-[#594139]'
+              }`}
             >
               <span className="material-symbols-outlined text-[20px]">close</span>
             </button>
@@ -86,12 +107,24 @@ export const CartDrawer: React.FC = () => {
           <div className="flex-1 overflow-y-auto p-5 space-y-4">
             {cart.length === 0 ? (
               <div className="text-center py-16 space-y-4">
-                <div className="w-20 h-20 mx-auto rounded-full bg-[#f3f3f3] flex items-center justify-center text-[#8d7168]">
+                <div className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center ${
+                  themeMode === 'warm' ? 'bg-[#f5ede4] text-[#6b5a4a]' :
+                  themeMode === 'dark' ? 'bg-[#2e302f] text-[#c4c4c4]' :
+                  'bg-[#f3f3f3] text-[#8d7168]'
+                }`}>
                   <span className="material-symbols-outlined text-4xl">takeout_dining</span>
                 </div>
                 <div>
-                  <p className="font-heading font-bold text-base text-[#1a1c1c]">Your tray is empty</p>
-                  <p className="text-xs text-[#594139] max-w-xs mx-auto mt-1">
+                  <p className={`font-heading font-bold text-base ${
+                    themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                    themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                    'text-[#1a1c1c]'
+                  }`}>Your tray is empty</p>
+                  <p className={`text-xs max-w-xs mx-auto mt-1 ${
+                    themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                    themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                    'text-[#594139]'
+                  }`}>
                     Explore our chef-curated menus and add delicious items to get started!
                   </p>
                 </div>
@@ -104,8 +137,16 @@ export const CartDrawer: React.FC = () => {
               </div>
             ) : (
               <>
-                <div className="flex items-center justify-between pb-2 border-b border-[#e1bfb5]/30">
-                  <span className="text-xs font-bold text-[#8d7168] uppercase tracking-wider">
+                <div className={`flex items-center justify-between pb-2 border-b ${
+                  themeMode === 'warm' ? 'border-b-[#d4c4b8]/30' :
+                  themeMode === 'dark' ? 'border-b-white/20' :
+                  'border-b-[#e1bfb5]/30'
+                }`}>
+                  <span className={`text-xs font-bold uppercase tracking-wider ${
+                    themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                    themeMode === 'dark' ? 'text-[#e5e5e5]' :
+                    'text-[#1a1c1c]'
+                  }`}>
                     {cartItemsCount} {cartItemsCount === 1 ? 'Item' : 'Items'}
                   </span>
                   <button
@@ -120,7 +161,11 @@ export const CartDrawer: React.FC = () => {
                   {cart.map(item => (
                     <div 
                       key={item.id}
-                      className="p-3.5 rounded-2xl bg-[#f9f9f9] border border-[#e1bfb5]/40 flex gap-3 group transition-all hover:bg-white"
+                      className={`p-3.5 rounded-2xl border flex gap-3 group transition-all ${
+                        themeMode === 'warm' ? 'bg-[#fffbf7] border-[#d4c4b8]/40 hover:bg-[#f5ede4]' :
+                        themeMode === 'dark' ? 'bg-[#242625] border-white/20 hover:bg-[#2e302f]' :
+                        'bg-[#f9f9f9] border-[#e1bfb5]/40 hover:bg-white'
+                      }`}
                     >
                       <img 
                         src={item.menuItem.image} 
@@ -129,12 +174,20 @@ export const CartDrawer: React.FC = () => {
                       />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-1">
-                          <h4 className="font-heading font-bold text-xs text-[#1a1c1c] truncate">
+                          <h4 className={`font-heading font-bold text-xs truncate ${
+                            themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                            themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                            'text-[#1a1c1c]'
+                          }`}>
                             {item.menuItem.name}
                           </h4>
                           <button
                             onClick={() => removeFromCart(item.id)}
-                            className="text-[#8d7168] hover:text-[#ba1a1a] transition-colors"
+                            className={`transition-colors ${
+                              themeMode === 'warm' ? 'text-[#6b5a4a] hover:text-[#ba1a1a]' :
+                              themeMode === 'dark' ? 'text-[#c4c4c4] hover:text-[#ba1a1a]' :
+                              'text-[#8d7168] hover:text-[#ba1a1a]'
+                            }`}
                           >
                             <span className="material-symbols-outlined text-[16px]">delete</span>
                           </button>
@@ -142,10 +195,18 @@ export const CartDrawer: React.FC = () => {
 
                         {/* Options summary */}
                         {Object.entries(item.selectedOptions).length > 0 && (
-                          <div className="text-[10px] text-[#594139] space-y-0.5 mt-1">
+                          <div className={`text-[10px] space-y-0.5 mt-1 ${
+                            themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                            themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                            'text-[#594139]'
+                          }`}>
                             {Object.entries(item.selectedOptions).map(([key, val]) => (
                               <p key={key} className="truncate">
-                                <span className="font-medium text-[#8d7168]">{key}:</span> {val}
+                                <span className={`font-medium ${
+                                  themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                                  themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                                  'text-[#8d7168]'
+                                }`}>{key}:</span> {val}
                               </p>
                             ))}
                           </div>
@@ -157,24 +218,44 @@ export const CartDrawer: React.FC = () => {
                           </p>
                         )}
 
-                        <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#e1bfb5]/20">
+                        <div className={`flex items-center justify-between mt-2 pt-2 border-t ${
+                          themeMode === 'warm' ? 'border-t-[#d4c4b8]/20' :
+                          themeMode === 'dark' ? 'border-t-white/20' :
+                          'border-t-[#e1bfb5]/20'
+                        }`}>
                           <span className="font-heading font-bold text-xs text-[#ab3500]">
                             ${item.itemTotal.toFixed(2)}
                           </span>
 
-                          <div className="flex items-center gap-2 bg-white rounded-lg border border-[#e1bfb5]/60 px-1.5 py-0.5">
+                          <div className={`flex items-center gap-2 rounded-lg border px-1.5 py-0.5 ${
+                            themeMode === 'warm' ? 'bg-[#fffbf7] border-[#d4c4b8]/60' :
+                            themeMode === 'dark' ? 'bg-[#242625] border-white/20' :
+                            'bg-white border-[#e1bfb5]/60'
+                          }`}>
                             <button
                               onClick={() => updateCartQuantity(item.id, -1)}
-                              className="w-5 h-5 flex items-center justify-center text-[#594139] hover:text-[#ab3500]"
+                              className={`w-5 h-5 flex items-center justify-center hover:text-[#ab3500] ${
+                                themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                                themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                                'text-[#594139]'
+                              }`}
                             >
                               -
                             </button>
-                            <span className="text-xs font-bold text-[#1a1c1c] min-w-[12px] text-center">
+                            <span className={`text-xs font-bold min-w-3 text-center ${
+                              themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                              themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                              'text-[#1a1c1c]'
+                            }`}>
                               {item.quantity}
                             </span>
                             <button
                               onClick={() => updateCartQuantity(item.id, 1)}
-                              className="w-5 h-5 flex items-center justify-center text-[#594139] hover:text-[#ab3500]"
+                              className={`w-5 h-5 flex items-center justify-center hover:text-[#ab3500] ${
+                                themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                                themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                                'text-[#594139]'
+                              }`}
                             >
                               +
                             </button>
@@ -188,12 +269,28 @@ export const CartDrawer: React.FC = () => {
                 {/* Promo Code Input */}
                 <div className="pt-2">
                   {appliedPromo ? (
-                    <div className="p-3 bg-[#00ae81]/10 rounded-2xl border border-[#00ae81]/30 flex items-center justify-between">
+                    <div className={`p-3 rounded-2xl border flex items-center justify-between ${
+                      themeMode === 'warm' ? 'bg-[#00ae81]/10 border-[#00ae81]/30' :
+                      themeMode === 'dark' ? 'bg-[#00ae81]/20 border-[#00ae81]/40' :
+                      'bg-[#00ae81]/10 border-[#00ae81]/30'
+                    }`}>
                       <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-[#006c4f] text-[20px]">local_offer</span>
+                        <span className={`material-symbols-outlined text-[20px] ${
+                          themeMode === 'warm' ? 'text-[#006c4f]' :
+                          themeMode === 'dark' ? 'text-[#00ff99]' :
+                          'text-[#006c4f]'
+                        }`}>local_offer</span>
                         <div>
-                          <p className="text-xs font-bold text-[#006c4f]">{appliedPromo.code} Applied</p>
-                          <p className="text-[10px] text-[#594139]">
+                          <p className={`text-xs font-bold ${
+                            themeMode === 'warm' ? 'text-[#006c4f]' :
+                            themeMode === 'dark' ? 'text-[#00ff99]' :
+                            'text-[#006c4f]'
+                          }`}>{appliedPromo.code} Applied</p>
+                          <p className={`text-[10px] ${
+                            themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                            themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                            'text-[#594139]'
+                          }`}>
                             {appliedPromo.discountType === 'percentage' 
                               ? `${appliedPromo.discountValue}% off order`
                               : `$${appliedPromo.discountValue} discount`}
@@ -202,7 +299,11 @@ export const CartDrawer: React.FC = () => {
                       </div>
                       <button
                         onClick={removePromoCode}
-                        className="text-xs font-bold text-[#ba1a1a] hover:underline"
+                        className={`text-xs font-bold hover:underline ${
+                          themeMode === 'warm' ? 'text-[#ba1a1a]' :
+                          themeMode === 'dark' ? 'text-[#ff6b6b]' :
+                          'text-[#ba1a1a]'
+                        }`}
                       >
                         Remove
                       </button>
@@ -235,26 +336,62 @@ export const CartDrawer: React.FC = () => {
                 </div>
 
                 {/* Pricing Summary */}
-                <div className="p-4 bg-[#f3f3f3] rounded-2xl border border-[#e1bfb5]/40 space-y-2 text-xs">
-                  <div className="flex justify-between text-[#594139]">
+                <div className={`p-4 rounded-2xl border space-y-2 text-xs ${
+                  themeMode === 'warm' ? 'bg-[#f5ede4] border-[#d4c4b8]/40' :
+                  themeMode === 'dark' ? 'bg-[#2e302f] border-white/20' :
+                  'bg-[#f3f3f3] border-[#e1bfb5]/40'
+                }`}>
+                  <div className={`flex justify-between ${
+                    themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                    themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                    'text-[#594139]'
+                  }`}>
                     <span>Item Subtotal</span>
-                    <span className="font-semibold text-[#1a1c1c]">${cartSubtotal.toFixed(2)}</span>
+                    <span className={`font-semibold ${
+                      themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                      themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                      'text-[#1a1c1c]'
+                    }`}>${cartSubtotal.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-[#594139]">
+                  <div className={`flex justify-between ${
+                    themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                    themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                    'text-[#594139]'
+                  }`}>
                     <span>Delivery Fee</span>
-                    <span className="font-semibold text-[#1a1c1c]">${deliveryFee.toFixed(2)}</span>
+                    <span className={`font-semibold ${
+                      themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                      themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                      'text-[#1a1c1c]'
+                    }`}>${deliveryFee.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-[#594139]">
+                  <div className={`flex justify-between ${
+                    themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                    themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                    'text-[#594139]'
+                  }`}>
                     <span>Service & Eco Fee</span>
-                    <span className="font-semibold text-[#1a1c1c]">${serviceFee.toFixed(2)}</span>
+                    <span className={`font-semibold ${
+                      themeMode === 'warm' ? 'text-[#3d2b1f]' :
+                      themeMode === 'dark' ? 'text-[#f5f5f5]' :
+                      'text-[#1a1c1c]'
+                    }`}>${serviceFee.toFixed(2)}</span>
                   </div>
                   {discount > 0 && (
-                    <div className="flex justify-between text-[#006c4f] font-bold">
+                    <div className={`flex justify-between font-bold ${
+                      themeMode === 'warm' ? 'text-[#006c4f]' :
+                      themeMode === 'dark' ? 'text-[#00ff99]' :
+                      'text-[#006c4f]'
+                    }`}>
                       <span>Promo Discount</span>
                       <span>-${discount.toFixed(2)}</span>
                     </div>
                   )}
-                  <div className="pt-2 border-t border-[#e1bfb5]/40 flex justify-between font-heading font-extrabold text-sm text-[#1a1c1c]">
+                  <div className={`pt-2 border-t flex justify-between font-heading font-extrabold text-sm ${
+                    themeMode === 'warm' ? 'border-t-[#d4c4b8]/40 text-[#3d2b1f]' :
+                    themeMode === 'dark' ? 'border-t-white/20 text-[#f5f5f5]' :
+                    'border-t-[#e1bfb5]/40 text-[#1a1c1c]'
+                  }`}>
                     <span>Total (excl. tip)</span>
                     <span className="text-[#ab3500]">${grandTotal.toFixed(2)}</span>
                   </div>
@@ -265,7 +402,11 @@ export const CartDrawer: React.FC = () => {
 
           {/* Drawer Footer */}
           {cart.length > 0 && (
-            <div className="p-5 border-t border-[#e1bfb5]/40 bg-white space-y-3">
+            <div className={`p-5 border-t space-y-3 ${
+              themeMode === 'warm' ? 'border-t-[#d4c4b8]/40 bg-[#fffbf7]' :
+              themeMode === 'dark' ? 'border-t-white/20 bg-[#242625]' :
+              'border-t-[#e1bfb5]/40 bg-white'
+            }`}>
               <button
                 onClick={() => {
                   setIsCartDrawerOpen(false);
@@ -279,7 +420,11 @@ export const CartDrawer: React.FC = () => {
                   <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
                 </span>
               </button>
-              <p className="text-center text-[11px] text-[#8d7168]">
+              <p className={`text-center text-[11px] ${
+                themeMode === 'warm' ? 'text-[#6b5a4a]' :
+                themeMode === 'dark' ? 'text-[#c4c4c4]' :
+                'text-[#8d7168]'
+              }`}>
                 ⚡ Guaranteed 20-30 min contactless delivery
               </p>
             </div>

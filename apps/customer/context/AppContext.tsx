@@ -1,14 +1,29 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { 
-  Persona, CustomerTab, VendorTab, RiderTab, CorporateTab,
-  Tenant, MenuItem, CartItem, Order, RiderJob, Promotion, SupportTicket, 
-  TeamMember, LoyaltyReward, CorporatePackage, OrderStatus,
-  StaffMember, StaffShift, PlatformSettings 
-} from '@umunthuhub/shared-types';
-import { dbService } from '../db/indexedDB';
-import confetti from 'canvas-confetti';
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import {
+  Persona,
+  CustomerTab,
+  VendorTab,
+  RiderTab,
+  CorporateTab,
+  Tenant,
+  MenuItem,
+  CartItem,
+  Order,
+  RiderJob,
+  Promotion,
+  SupportTicket,
+  TeamMember,
+  LoyaltyReward,
+  CorporatePackage,
+  OrderStatus,
+  StaffMember,
+  StaffShift,
+  PlatformSettings,
+} from "@umunthuhub/shared-types";
+import { dbService } from "../db/indexedDB";
+import confetti from "canvas-confetti";
 
 interface ToastMessage {
   id: string;
@@ -136,9 +151,10 @@ interface AppContextType {
   setIsMobileSidebarOpen: (open: boolean) => void;
 
   // Theme System
-  themeMode: 'light' | 'dark';
-  setThemeMode: (mode: 'light' | 'dark') => void;
+  themeMode: 'light' | 'warm' | 'dark';
+  setThemeMode: (mode: 'light' | 'warm' | 'dark') => void;
   toggleThemeMode: () => void;
+  isThemeTransitioning: boolean;
 
   // Toasts
   toasts: ToastMessage[];
@@ -206,21 +222,44 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   // Theme State
-  const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
+  const [themeMode, setThemeModeState] = useState<'light' | 'warm' | 'dark'>('light');
+  const [isThemeTransitioning, setIsThemeTransitioning] = useState(false);
 
   const toggleThemeMode = useCallback(() => {
-    setThemeMode((prev: string) => (prev === 'light' ? 'dark' : 'light'));
+    setIsThemeTransitioning(true);
+    setTimeout(() => {
+      setThemeModeState((prev) => {
+        if (prev === 'light') return 'warm';
+        if (prev === 'warm') return 'dark';
+        return 'light';
+      });
+      setTimeout(() => setIsThemeTransitioning(false), 300);
+    }, 50);
   }, []);
 
-  useEffect(() => {
-    if (themeMode === 'dark') {
-      document.documentElement.classList.add('dark');
-      document.body.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      document.body.classList.remove('dark');
-    }
+  const setThemeMode = useCallback((mode: 'light' | 'warm' | 'dark') => {
+    if (mode === themeMode) return;
+    setIsThemeTransitioning(true);
+    setTimeout(() => {
+      setThemeModeState(mode);
+      setTimeout(() => setIsThemeTransitioning(false), 300);
+    }, 50);
   }, [themeMode]);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', themeMode);
+  }, [themeMode]);
+
+  useEffect(() => {
+    const overlay = document.getElementById('theme-transition-overlay');
+    if (overlay) {
+      if (isThemeTransitioning) {
+        overlay.classList.add('active');
+      } else {
+        overlay.classList.remove('active');
+      }
+    }
+  }, [isThemeTransitioning]);
 
   // Toasts
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
@@ -819,9 +858,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         isMobileSidebarOpen,
         setIsMobileSidebarOpen,
 
-        themeMode,
+        themeMode: themeMode,
         setThemeMode,
         toggleThemeMode,
+        isThemeTransitioning,
 
         toasts,
         showToast,
