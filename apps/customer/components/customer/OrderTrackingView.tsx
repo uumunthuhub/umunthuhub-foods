@@ -602,7 +602,7 @@ export const OrderTrackingView: React.FC = () => {
 
             <div className="pt-2 text-center">
               <button
-                onClick={() => showToast('Help Desk', 'Connecting to order resolution supervisor...', 'info')}
+                onClick={() => setCustomerTab('support')}
                 className={`text-xs font-semibold underline ${
                   themeMode === 'warm' ? 'text-[#6b5a4a] hover:text-[#ab3500]' :
                   themeMode === 'dark' ? 'text-[#c4c4c4] hover:text-[#ab3500]' :

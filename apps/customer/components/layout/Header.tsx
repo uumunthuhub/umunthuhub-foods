@@ -118,7 +118,7 @@ export const Header: React.FC = () => {
                 onClick={() => setCustomerTab('home')}
                 className="flex items-center gap-2 group text-left cursor-pointer min-w-0"
               >
-                <div className={`shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-xl overflow-hidden shadow-md border flex items-center justify-center transition-transform group-hover:scale-105 ${
+                <div className={`shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl overflow-hidden shadow-md border flex items-center justify-center transition-transform group-hover:scale-105 ${
                   themeMode === 'warm' ? 'border-[#d4c4b8]/60 bg-[#fffbf7]' :
                   themeMode === 'dark' ? 'border-white/20 bg-[#242625]' :
                   'border-[#e1bfb5]/60 bg-white'

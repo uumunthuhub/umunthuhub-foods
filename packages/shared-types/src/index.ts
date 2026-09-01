@@ -1,6 +1,6 @@
 export type Persona = 'customer' | 'vendor' | 'rider' | 'admin' | 'corporate';
 
-export type CustomerTab = 'home' | 'search' | 'restaurant' | 'checkout' | 'tracking' | 'rewards';
+export type CustomerTab = 'home' | 'search' | 'restaurant' | 'checkout' | 'tracking' | 'rewards' | 'support';
 export type VendorTab = 'dashboard' | 'kds' | 'menu' | 'promotions' | 'onboarding' | 'setup_wizard';
 export type RiderTab = 'radar' | 'active_job' | 'earnings' | 'rewards' | 'profile';
 export type AdminTab = 'overview' | 'venues' | 'staff' | 'team' | 'billing' | 'payouts' | 'support' | 'settings' | 'profile' | 'store_wizard' | 'auth' | 'store_selector' | 'tenants';

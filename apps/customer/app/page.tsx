@@ -14,6 +14,7 @@ import { RestaurantMenu } from '../components/customer/RestaurantMenu';
 import { CheckoutView } from '../components/customer/CheckoutView';
 import { OrderTrackingView } from '../components/customer/OrderTrackingView';
 import { RewardsView } from '../components/customer/RewardsView';
+import { CustomerSupport } from '../components/customer/CustomerSupport';
 
 const MainAppContent: React.FC = () => {
   const {
@@ -35,6 +36,8 @@ const MainAppContent: React.FC = () => {
         return <OrderTrackingView />;
       case 'rewards':
         return <RewardsView />;
+      case 'support':
+        return <CustomerSupport />;
       default:
         return <CustomerHome />;
     }
