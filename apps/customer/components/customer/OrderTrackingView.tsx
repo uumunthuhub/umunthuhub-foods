@@ -161,20 +161,6 @@ export const OrderTrackingView: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Quick switcher to KDS for demoing multi-tenant flow */}
-          <button
-            onClick={() => {
-              setPersona('vendor');
-              setVendorTab('kds');
-              showToast('Switched to Kitchen Display', 'Advance order status from the restaurant KDS screen', 'info');
-            }}
-            className="px-3.5 py-2 rounded-xl bg-[#24619d]/10 hover:bg-[#24619d]/20 border border-[#24619d]/30 text-[#24619d] text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
-            title="Simulate kitchen state updates"
-          >
-            <span className="material-symbols-outlined text-[16px]">soup_kitchen</span>
-            <span>View in Kitchen KDS</span>
-          </button>
-
           <button
             onClick={() => setCustomerTab('home')}
             className={`px-3.5 py-2 rounded-xl border text-xs font-bold transition-colors cursor-pointer ${
