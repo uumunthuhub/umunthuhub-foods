@@ -1,5 +1,0 @@
-{
-  "buildCommand": "pnpm pbuild",
-  "outputDirectory": "apps/admin/.next",
-  "installCommand": "pnpm install"
-}
