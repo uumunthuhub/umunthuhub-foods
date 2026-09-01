@@ -215,7 +215,7 @@ export const NavigationSidebar: React.FC = () => {
                   }`}
                   title="My Profile"
                 >
-                  <User className="w-[18px] h-[18px] shrink-0" />
+                  <User className="w-4.5 h-4.5 shrink-0" />
                   {!isSidebarCollapsed && <span>My Profile</span>}
                 </button>
               </div>
@@ -255,7 +255,7 @@ export const NavigationSidebar: React.FC = () => {
                   }`}
                   title="Overview"
                 >
-                  <Activity className="w-[18px] h-[18px] shrink-0" />
+                  <Activity className="w-4.5 h-4.5 shrink-0" />
                   {!isSidebarCollapsed && <span>Overview</span>}
                 </button>
                 <button
@@ -272,7 +272,7 @@ export const NavigationSidebar: React.FC = () => {
                   }`}
                   title="KDS"
                 >
-                  <ChefHat className="w-[18px] h-[18px] shrink-0" />
+                  <ChefHat className="w-4.5 h-4.5 shrink-0" />
                   {!isSidebarCollapsed && <span>KDS</span>}
                 </button>
                 <button
@@ -289,7 +289,7 @@ export const NavigationSidebar: React.FC = () => {
                   }`}
                   title="Menu"
                 >
-                  <BookOpen className="w-[18px] h-[18px] shrink-0" />
+                  <BookOpen className="w-4.5 h-4.5 shrink-0" />
                   {!isSidebarCollapsed && <span>Menu</span>}
                 </button>
                 <button
