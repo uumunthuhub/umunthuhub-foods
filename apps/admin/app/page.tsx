@@ -175,12 +175,17 @@ const MainAppContent: React.FC = () => {
 
           {adminTab === 'overview' && <AdminDashboard />}
           {adminTab === 'tenants' && <TenantDirectory />}
+          {adminTab === 'venues' && <TenantDirectory />}
           {adminTab === 'payouts' && <CommissionPayouts />}
+          {adminTab === 'billing' && <CommissionPayouts />}
           {adminTab === 'team' && <TeamManagement />}
           {adminTab === 'support' && <HelpDeskSupport />}
           {adminTab === 'staff' && <StaffManagement />}
           {adminTab === 'settings' && <PlatformSettingsView />}
           {adminTab === 'profile' && <AdminProfile />}
+          {adminTab === 'store_wizard' && <StoreSetupWizard onComplete={() => setAdminTab('overview')} onCancel={() => setAdminTab('overview')} />}
+          {adminTab === 'auth' && <AdminAuthView initialMode="login" onLoginSuccess={(mode) => handleAdminAuthSuccess(mode)} />}
+          {adminTab === 'store_selector' && <AdminStoreSelectorView onSelectStore={(tenantId) => { setCurrentTenantId(tenantId); setAdminTab('overview'); }} onLaunchNewStoreWizard={() => { setWizardStep(1); setAppScreen('wizard'); }} onContinueMissingStep={(tenantId, stepNum) => { setCurrentTenantId(tenantId); setWizardStep(stepNum); setAppScreen('wizard'); }} onLogoutAdmin={() => { setAdminViewMode('dashboard'); setAppScreen('welcome'); }} />}
         </div>
       );
     }
@@ -249,7 +254,7 @@ const MainAppContent: React.FC = () => {
                   : 'text-[#594139] hover:text-[#ab3500]'
               }`}
             >
-              <ArrowLeft className="w-[16px] h-[16px]" />
+              <ArrowLeft className="w-4 h-4" />
               Back to home
             </button>
           </div>
@@ -380,7 +385,7 @@ const MainAppContent: React.FC = () => {
               {toast.type === 'success' ? <CheckCircle className="w-[20px] h-[20px] text-[#00ae81]" /> :
                toast.type === 'warning' ? <AlertTriangle className="w-[20px] h-[20px] text-amber-500" /> :
                toast.type === 'error' ? <AlertCircle className="w-[20px] h-[20px] text-[#ba1a1a]" /> :
-               <Info className="w-[20px] h-[20px] text-[#24619d]" />}
+               <Info className="w-5 h-5 text-[#24619d]" />}
               <div className="flex-1">
                 <h4 className={`font-heading font-bold text-xs ${
                   themeMode === 'dark' ? 'text-[#f5f5f5]' : 'text-[#1a1c1c]'
@@ -392,7 +397,7 @@ const MainAppContent: React.FC = () => {
               <button className={`${
                 themeMode === 'dark' ? 'text-[#c4c4c4] hover:text-[#f5f5f5]' : 'text-[#8d7168] hover:text-[#1a1c1c]'
               }`}>
-                <X className="w-[14px] h-[14px]" />
+                <X className="w-3.5 h-3.5" />
               </button>
             </div>
           ))}
