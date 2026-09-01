@@ -252,13 +252,12 @@ export const RestaurantMenu: React.FC = () => {
                 View Tray & Checkout
               </span>
             </div>
-            <span className="font-heading font-extrabold text-sm">
+            <span className="font-heading font-extrabold text-base">
               ${cartSubtotal.toFixed(2)} →
             </span>
           </button>
         </div>
       )}
-
     </div>
   );
 };
