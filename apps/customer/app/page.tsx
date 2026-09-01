@@ -53,7 +53,7 @@ const MainAppContent: React.FC = () => {
       }`} data-theme-aware>
         <Header />
 
-      <div className="flex-1 max-w-384 w-full mx-auto px-2 sm:px-4 lg:px-6 pt-24 pb-4 sm:pb-5 overflow-x-hidden">
+      <div className="flex-1 w-[calc(100%-1.5rem)] sm:w-[calc(100%-2.5rem)] max-w-7xl mx-auto pt-24 pb-4 sm:pb-5 overflow-x-hidden">
         <main className="w-full">
           {renderActiveView()}
         </main>

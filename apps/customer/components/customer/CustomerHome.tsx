@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useApp } from '../../context/AppContext';
-import { ScrollableContainer } from '@umunthuhub/ui';
 import { ProductCard } from '../common/ProductCard';
 import { FoodScrollIndicator } from '../common/FoodScrollIndicator';
 import confetti from 'canvas-confetti';
@@ -16,12 +15,6 @@ export const CustomerHome: React.FC = () => {
     openItemModal,
     showToast,
     applyPromoCode,
-    activeOrder,
-    persona,
-    setPersona,
-    setVendorTab,
-    setRiderTab,
-    setIsMobileSidebarOpen,
     themeMode
   } = useApp();
 
@@ -45,20 +38,6 @@ export const CustomerHome: React.FC = () => {
     { video: '/videos/Sauce_drizzling_over_fried_chicken_202608191449.mp4', name: 'Crispy Fried Chicken', restaurant: 'Southern Comfort', price: 14.99 },
   ];
 
-  const categories = [
-    { name: 'All', icon: 'lunch_dining' },
-    { name: 'Healthy & Organic', icon: 'eco' },
-    { name: 'Gourmet Burgers', icon: 'fastfood' },
-    { name: 'Japanese & Sushi', icon: 'set_meal' },
-    { name: 'Italian & Pizza', icon: 'local_pizza' },
-    { name: 'Mexican & Tacos', icon: 'restaurant_menu' },
-    { name: 'Ramen & Noodles', icon: 'ramen_dining' },
-    { name: 'Smoked BBQ', icon: 'outdoor_grill' },
-    { name: 'Dim Sum & Dumplings', icon: 'soup_kitchen' },
-    { name: 'French Bakery & Cafe', icon: 'bakery_dining' },
-    { name: 'Desserts & Gelato', icon: 'icecream' },
-    { name: 'Artisan Beverages', icon: 'local_cafe' },
-  ];
 
   // Filter restaurants
   let filteredTenants = tenants.filter(t => {
@@ -132,7 +111,7 @@ export const CustomerHome: React.FC = () => {
     }`}>
       
           {/* Hero Banner with Search & Address */}
-      <section className={`relative overflow-hidden rounded-4xl p-6 sm:p-10 backdrop-blur-2xl border shadow-[0_8px_40px_-8px_rgba(171,53,0,0.18)] ${
+      <section className={`relative overflow-hidden rounded-4xl p-6 sm:p-10 w-[calc(100%-1.5rem)] sm:w-[calc(100%-2.5rem)] max-w-7xl mx-auto backdrop-blur-2xl border shadow-[0_8px_40px_-8px_rgba(171,53,0,0.18)] ${
         themeMode === 'warm' ? 'bg-[#fffbf7]/60 border-[#d4c4b8]/50' :
         themeMode === 'dark' ? 'bg-[#242625]/60 border-white/10' :
         'bg-white/35 border-white/60'
