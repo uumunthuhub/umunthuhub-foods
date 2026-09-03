@@ -27,6 +27,8 @@ export const MenuManager: React.FC = () => {
   const [price, setPrice] = useState('14.50');
   const [category, setCategory] = useState<MenuItem['category']>('Mains');
   const [image, setImage] = useState('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&auto=format&fit=crop&q=80');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
   const [isVeg, setIsVeg] = useState(false);
   const [isGF, setIsGF] = useState(false);
   const [isSpicy, setIsSpicy] = useState(false);
@@ -43,9 +45,30 @@ export const MenuManager: React.FC = () => {
 
   const categories = ['All', 'Starters', 'Mains', 'Sides', 'Desserts', 'Beverages', 'Signature'];
 
-  const handleSaveItem = (e: React.FormEvent) => {
+  const handleSaveItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
+
+    let finalImageUrl = image;
+
+    if (selectedFile) {
+      setIsUploading(true);
+      try {
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        if (!res.ok) throw new Error('Upload failed');
+        const data = await res.json();
+        finalImageUrl = data.secure_url;
+      } catch (error) {
+        showToast('Upload Error', 'Failed to upload image. Using previous image.', 'error');
+      } finally {
+        setIsUploading(false);
+      }
+    }
 
     if (editingItem) {
       updateMenuItem({
@@ -54,7 +77,7 @@ export const MenuManager: React.FC = () => {
         description,
         price: parseFloat(price) || 0,
         category,
-        image,
+        image: finalImageUrl,
         isVeg,
         isGlutenFree: isGF,
         isSpicy,
@@ -68,7 +91,7 @@ export const MenuManager: React.FC = () => {
         description,
         price: parseFloat(price) || 0,
         category,
-        image,
+        image: finalImageUrl,
         isVeg,
         isGlutenFree: isGF,
         isSpicy,
@@ -88,6 +111,7 @@ export const MenuManager: React.FC = () => {
     setPrice('14.50');
     setCategory('Mains');
     setImage('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&auto=format&fit=crop&q=80');
+    setSelectedFile(null);
     setIsVeg(false);
     setIsGF(false);
     setIsSpicy(false);
@@ -101,6 +125,7 @@ export const MenuManager: React.FC = () => {
     setPrice(item.price.toString());
     setCategory(item.category);
     setImage(item.image);
+    setSelectedFile(null);
     setIsVeg(!!item.isVeg);
     setIsGF(!!item.isGlutenFree);
     setIsSpicy(!!item.isSpicy);
@@ -386,14 +411,26 @@ export const MenuManager: React.FC = () => {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-[#1a1c1c] block mb-1">Image URL (Food Photo)</label>
-                <input
-                  type="url"
-                  required
-                  value={image}
-                  onChange={(e) => setImage(e.target.value)}
-                  className="w-full glass-input px-3.5 py-2 rounded-xl text-xs"
-                />
+                <label className="text-xs font-bold text-[#1a1c1c] block mb-1">Food Photo</label>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-gray-100 flex-shrink-0 overflow-hidden border border-gray-200">
+                    {selectedFile ? (
+                      <img src={URL.createObjectURL(selectedFile)} alt="Preview" className="w-full h-full object-cover" />
+                    ) : (
+                      <img src={image} alt="Current" className="w-full h-full object-cover" />
+                    )}
+                  </div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      if (e.target.files?.[0]) {
+                        setSelectedFile(e.target.files[0]);
+                      }
+                    }}
+                    className="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#ab3500]/10 file:text-[#ab3500] hover:file:bg-[#ab3500]/20 cursor-pointer"
+                  />
+                </div>
               </div>
 
               {/* Dietary checkboxes */}
@@ -437,9 +474,10 @@ export const MenuManager: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 rounded-xl glass-button-primary text-xs font-bold shadow-md shadow-[#ab3500]/25"
+                  disabled={isUploading}
+                  className="flex-1 py-2.5 rounded-xl glass-button-primary text-xs font-bold shadow-md shadow-[#ab3500]/25 disabled:opacity-50 flex items-center justify-center"
                 >
-                  {editingItem ? 'Save Changes' : 'Publish Dish to Menu'}
+                  {isUploading ? 'Uploading...' : editingItem ? 'Save Changes' : 'Publish Dish to Menu'}
                 </button>
               </div>
             </form>

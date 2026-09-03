@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import { MenuItem } from '@umunthuhub/shared-types';
 import { ScrollableContainer } from '@umunthuhub/ui';
 import { ProductCard } from '../common/ProductCard';
 

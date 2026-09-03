@@ -3,7 +3,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { MenuItem, Tenant } from '@umunthuhub/shared-types';
-import { ScrollableContainer } from '@umunthuhub/ui';
 
 export const TopSearchBar: React.FC = () => {
   const {
@@ -11,8 +10,6 @@ export const TopSearchBar: React.FC = () => {
     setPersona,
     setCustomerTab,
     setVendorTab,
-    setRiderTab,
-    setCorporateTab,
     tenants,
     menuItems,
     setSelectedRestaurantId,
@@ -25,7 +22,7 @@ export const TopSearchBar: React.FC = () => {
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState<'all' | 'dishes' | 'venues' | 'dietary'>('all');
-  const [selectedDiet, setSelectedDiet] = useState<string | null>(null);
+  const [selectedDiet] = useState<string | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -156,21 +153,6 @@ export const TopSearchBar: React.FC = () => {
     setIsOpen(false);
   };
 
-  const quickTags = [
-    { label: '🍕 Woodfired Pizza', search: 'Pizza' },
-    { label: '🍣 Tokyo Sushi & Sashimi', search: 'Sushi' },
-    { label: '🍔 Artisanal Smash Burgers', search: 'Burger' },
-    { label: '🌮 Street Tacos & Birria', search: 'Tacos' },
-    { label: '🍜 Tonkotsu Ramen & Bowls', search: 'Ramen' },
-    { label: '🥗 Organic Farm-to-Table', search: 'Organic' },
-    { label: '🥟 Dim Sum & Dumplings', search: 'Dim Sum' },
-    { label: '🥩 Smoked Texas BBQ', search: 'BBQ' },
-    { label: '🥐 French Bakery & Pastries', search: 'Bakery' },
-    { label: '🌱 100% Plant-Based Vegan', diet: 'veg' },
-    { label: '🌶️ Hot & Spicy Specialties', diet: 'spicy' },
-    { label: '🍦 Gelato & Sweet Treats', search: 'Dessert' },
-    { label: '⚡ Ultra-Fast 15-min Prep', search: 'Express' }
-  ];
 
   return (
     <div ref={containerRef} className="relative w-full z-30 mb-6">

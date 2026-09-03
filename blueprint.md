@@ -563,7 +563,30 @@ Create confetti utility components for:
 
 ---
 
-## Module 10: Final Setup
+## Module 10: Customer Mobile App - Core Setup
+
+**Goal**: Initialize React Native/Expo customer app with basic configuration
+
+### Dependencies
+- expo: ~57.0.19
+- react-native: 0.86.3
+- nativewind: ^4.0.1
+- zustand: ^4.5.2
+- @umunthuhub/shared-types: workspace:*
+
+### Steps
+
+Create `apps/customer-mobile/package.json` for Expo app.
+
+Implement core navigation and authentication flow using Expo Router.
+Set up Zustand for state management in `src/store/useAppStore.ts`.
+Configure NativeWind for Tailwind CSS styling.
+
+**Verification**: Run `pnpm dev:mobile` to start the mobile app
+
+---
+
+## Module 11: Final Setup
 
 **Goal**: Complete project initialization and verification
 
@@ -599,6 +622,12 @@ git commit -m "Initial commit"
 - canvas-confetti: ^1.9.4
 - three: ^0.185.1
 
+### Customer Mobile App Specific
+- expo: ~57.0.19
+- react-native: 0.86.3
+- nativewind: ^4.0.1
+- zustand: ^4.5.2
+
 ### Development Dependencies
 - @tailwindcss/postcss: ^4
 - tailwindcss: ^4
@@ -624,6 +653,7 @@ pnpm dev
 # Run specific apps
 pnpm dev:customer  # Port 3000
 pnpm dev:admin     # Port 3001
+pnpm dev:mobile    # Expo mobile app
 
 # Build all apps
 pnpm build
@@ -665,6 +695,14 @@ pnpm lint
 - Order tracking
 - Rewards and loyalty program
 - 3D visualizations (Three.js)
+
+### Customer Mobile App (Expo)
+- Mobile ordering experience
+- Restaurant browsing and search
+- Menu browsing and customization
+- Cart and checkout
+- Order tracking
+- Rewards and loyalty program
 
 ## Shared Packages
 

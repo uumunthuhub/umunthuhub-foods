@@ -147,6 +147,12 @@ Type Definitions:
 - Uses Three.js for 3D graphics
 - Uses canvas-confetti for celebration effects
 
+### Customer Mobile App (Expo)
+- Purpose: Mobile ordering experience
+- Key features: Restaurant browsing, menu details, cart and checkout, order tracking
+- Uses React Native / Expo, NativeWind (Tailwind), and Zustand
+- Core flows include an Authentication wall that redirects to a tabbed navigation interface
+
 ## Common Pitfalls
 
 1. **Next.js Version**: Do not assume traditional Next.js patterns work
@@ -162,6 +168,7 @@ Type Definitions:
 pnpm dev              # All apps
 pnpm dev:customer     # Customer app only
 pnpm dev:admin        # Admin portal only
+pnpm dev:mobile       # Customer mobile app (Expo)
 
 # Building
 pnpm build            # All apps

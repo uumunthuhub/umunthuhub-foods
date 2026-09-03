@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { useApp } from '../../context/AppContext';
-import { LoyaltyReward } from '@umunthuhub/shared-types';
 
 export const RewardsView: React.FC = () => {
   const {

@@ -1,0 +1,103 @@
+export const categories = [
+  { id: '1', name: 'Burger', icon: '🍔' },
+  { id: '2', name: 'Pizza', icon: '🍕' },
+  { id: '3', name: 'Healthy', icon: '🥗' },
+  { id: '4', name: 'Sushi', icon: '🍣' },
+  { id: '5', name: 'Dessert', icon: '🍰' },
+];
+
+export const restaurants = [
+  {
+    id: 'r1',
+    name: 'Burger King',
+    rating: 4.8,
+    deliveryTime: '20-30 min',
+    deliveryFee: 2.50,
+    tags: ['Burger', 'Fast Food'],
+    image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500&q=80',
+    featured: true,
+  },
+  {
+    id: 'r2',
+    name: 'Pizza Hut',
+    rating: 4.5,
+    deliveryTime: '30-45 min',
+    deliveryFee: 3.00,
+    tags: ['Pizza', 'Italian'],
+    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80',
+    featured: true,
+  },
+  {
+    id: 'r3',
+    name: 'Green Bowl',
+    rating: 4.9,
+    deliveryTime: '15-25 min',
+    deliveryFee: 1.50,
+    tags: ['Healthy', 'Vegan'],
+    image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80',
+    featured: false,
+  }
+];
+
+export const menuItems = [
+  {
+    id: 'm1',
+    restaurantId: 'r1',
+    name: 'Classic Cheeseburger',
+    description: 'A juicy beef patty with melted cheese, lettuce, tomato, and our special sauce.',
+    price: 8.99,
+    image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80',
+    categoryId: '1',
+    isPopular: true,
+  },
+  {
+    id: 'm2',
+    restaurantId: 'r1',
+    name: 'Double Bacon Burger',
+    description: 'Two beef patties, crispy bacon, cheddar cheese, and BBQ sauce.',
+    price: 12.99,
+    image: 'https://images.unsplash.com/photo-1594212202875-8422c54eebe4?w=500&q=80',
+    categoryId: '1',
+    isPopular: true,
+  },
+  {
+    id: 'm3',
+    restaurantId: 'r2',
+    name: 'Pepperoni Pizza',
+    description: 'Classic pepperoni pizza with mozzarella cheese and tomato sauce.',
+    price: 15.99,
+    image: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=500&q=80',
+    categoryId: '2',
+    isPopular: true,
+  },
+  {
+    id: 'm4',
+    restaurantId: 'r3',
+    name: 'Quinoa Salad',
+    description: 'Fresh quinoa, mixed greens, cherry tomatoes, avocado, and lemon vinaigrette.',
+    price: 10.50,
+    image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80',
+    categoryId: '3',
+    isPopular: false,
+  },
+  {
+    id: 'm5',
+    restaurantId: 'r2',
+    name: 'Margherita Pizza',
+    description: 'Fresh mozzarella, tomatoes, and basil on our signature dough.',
+    price: 13.99,
+    image: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80',
+    categoryId: '2',
+    isPopular: true,
+  },
+  {
+    id: 'm6',
+    restaurantId: 'r3',
+    name: 'Avocado Toast',
+    description: 'Sourdough bread topped with smashed avocado, poached egg, and microgreens.',
+    price: 9.99,
+    image: 'https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?w=500&q=80',
+    categoryId: '3',
+    isPopular: true,
+  }
+];
